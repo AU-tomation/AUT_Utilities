@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="StringBuilder" Id="{8b6cce3d-fec6-455c-849a-88b106706848}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PUBLIC StringBuilder IMPLEMENTS  IStringBuilder, ILimitedStringBuilder
+VAR
+	{attribute 'hide'}
+	_BuildingString : STRING(2048);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Append" Id="{97928194-740a-46c9-9479-85912eaee214}">
+      <Declaration><![CDATA[METHOD PUBLIC Append : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Text : STRING(1024); //Text to append to current build string
+END_VAR
+VAR
+    _BoolRes : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BoolRes := Tc2_Utilities.CONCAT2(ADR(_BuildingString), ADR(Text), ADR(_BuildingString), SIZEOF(_BuildingString));
+Append := THIS^;    // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AssignDelimitedSubstringTo" Id="{698e6e2e-63f1-4fb0-889a-0788275ac183}">
+      <Declaration><![CDATA[METHOD AssignDelimitedSubstringTo : IStringBuilder
+VAR_INPUT
+    Delimiter : STRING(1);
+    SubstringIndex : UDINT;
+	Destination : POINTER TO STRING(2048);
+    DestinationSize : UDINT;
+END_VAR
+VAR
+    _CurrentPosition : UDINT := 0;
+    _CurrentDelimiterPosition : UDINT := 0;
+    _CurrentDelimiterIndex : UDINT := 0;
+    _LeadingDelimiterPosition : UDINT := 0;
+    _TrailingDelimiterPosition : UDINT := 0;
+    _Substring : STRING(2048) := '';
+    _Index : UDINT;
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// FOR _Index := 1 TO (SubstringIndex - 1) DO
+//     _LeadingDelimiterPosition := Tc2_Utilities.FIND2(ADR(_BuildingString), ADR(Delimiter))
+//     
+// END_FOR
+
+// ATTENTION: pointer arithmetics is used to move inside string
+IF SubstringIndex < 1 THEN
+    SubstringIndex := 1;
+END_IF
+REPEAT
+    _CurrentDelimiterPosition := Tc2_Utilities.FIND2(ADR(_BuildingString) + _CurrentPosition, ADR(Delimiter));
+    IF _CurrentDelimiterPosition > 0 THEN
+        _CurrentPosition := _CurrentPosition + _CurrentDelimiterPosition;
+        _CurrentDelimiterIndex := _CurrentDelimiterIndex + 1;
+        IF _CurrentDelimiterIndex = (SubstringIndex - 1) THEN
+            _LeadingDelimiterPosition := _CurrentPosition;
+        END_IF
+        IF _CurrentDelimiterIndex = SubstringIndex THEN
+            _TrailingDelimiterPosition := _CurrentPosition;
+        END_IF
+    END_IF
+    UNTIL _CurrentDelimiterPosition = 0 OR _CurrentDelimiterIndex = SubstringIndex
+END_REPEAT
+
+IF _CurrentDelimiterIndex = 0 THEN
+    // No delimiter was found: assign entire building string
+    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_BuildingString), DestinationSize);       
+ELSIF SubstringIndex > (_CurrentDelimiterIndex + 1) THEN
+    // Requested substring not found: assign an empty string
+    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);       
+ELSE
+    // Delimiters were found: assign requested substring
+    // NOTE: STRNCPY inserts a null terminator at the position of destination size (for copying n chars: destination size must be n + 1)
+    IF SubstringIndex = 1 THEN
+        _BoolRes := Tc2_Utilities.STRNCPY(ADR(_Substring), ADR(_BuildingString), _TrailingDelimiterPosition);   
+    ELSE
+        _BoolRes := Tc2_Utilities.STRNCPY(ADR(_Substring), ADR(_BuildingString) + _LeadingDelimiterPosition, _TrailingDelimiterPosition - _LeadingDelimiterPosition);
+    END_IF
+    //_Substring[_TrailingDelimiterPosition - _LeadingDelimiterPosition] := 0;    // Put Null terminator at the end of the substring
+    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);   
+END_IF
+AssignDelimitedSubstringTo := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AssignTo" Id="{0a14c808-fbd9-4bbc-a2f1-b424d90eeaab}">
+      <Declaration><![CDATA[METHOD AssignTo : IStringBuilder
+VAR_INPUT
+	Destination : POINTER TO STRING(2048);
+    DestinationSize : UDINT;
+END_VAR
+VAR
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_BuildingString), DestinationSize);
+AssignTo := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InsertAt" Id="{e92c66b5-b697-4308-a175-1131aa42cb77}">
+      <Declaration><![CDATA[METHOD PUBLIC InsertAt : IStringBuilder
+VAR_INPUT
+	Text : STRING(1024);
+	Position : UDINT;
+END_VAR
+VAR
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BoolRes := Tc2_Utilities.INSERT2(ADR(_BuildingString), ADR(Text), ADR(_BuildingString), SIZEOF(_BuildingString), Position);
+InsertAt := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Left" Id="{8830457f-8ba5-4b91-b336-a8c2e5712763}">
+      <Declaration><![CDATA[METHOD  Left : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Length : UDINT;
+END_VAR
+VAR
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BoolRes := Tc2_Utilities.DELETE2(ADR(_BuildingString), ADR(_BuildingString), SIZEOF(_BuildingString), Tc2_Utilities.LEN2(ADR(_BuildingString)) - Length, Length + 1);
+Left := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Mid" Id="{a790806c-0997-4e8a-953a-514ec7fcd716}">
+      <Declaration><![CDATA[METHOD  Mid : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Position : UDINT;
+	Length : UDINT;
+END_VAR
+VAR
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BoolRes := Tc2_Utilities.DELETE2(ADR(_BuildingString), ADR(_BuildingString), SIZEOF(_BuildingString), Position - 1, 1);
+_BoolRes := Tc2_Utilities.DELETE2(ADR(_BuildingString), ADR(_BuildingString), SIZEOF(_BuildingString), Tc2_Utilities.LEN2(ADR(_BuildingString)) - Length, Length + 1);
+Mid := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="PadLeft" Id="{e4c48602-110f-44b4-a98f-ab2f3008da18}">
+      <Declaration><![CDATA[METHOD  PadLeft : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+    PaddingChar : STRING(1);
+	TotalLength : UDINT;
+END_VAR
+VAR
+    _Index : UDINT;
+    _PaddingString : STRING(1024) := '';
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF Tc2_Utilities.LEN2(ADR(_BuildingString)) < TotalLength THEN
+    FOR _Index := 1 TO (TotalLength - Tc2_Utilities.LEN2(ADR(_BuildingString))) DO
+        InsertAt(PaddingChar, 1);
+    END_FOR   
+END_IF
+PadLeft := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="PadRight" Id="{f4859cef-2f49-40f4-b510-3cbecc19c1c4}">
+      <Declaration><![CDATA[METHOD  PadRight : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+    PaddingChar : STRING(1);
+	TotalLength : UDINT;
+END_VAR
+VAR
+    _Index : UDINT;
+    _PaddingString : STRING(1024) := '';
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF Tc2_Utilities.LEN2(ADR(_BuildingString)) < TotalLength THEN
+    FOR _Index := 1 TO (TotalLength - Tc2_Utilities.LEN2(ADR(_BuildingString))) DO
+        Append(PaddingChar);
+    END_FOR   
+END_IF
+PadRight := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RemoveAt" Id="{6c81872c-8f56-43aa-a82b-ba2a779ff3d2}">
+      <Declaration><![CDATA[METHOD RemoveAt : IStringBuilder
+VAR_INPUT
+	Position : UDINT;
+    Length : UDINT;
+END_VAR
+VAR
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BoolRes := Tc2_Utilities.DELETE2(ADR(_BuildingString), ADR(_BuildingString), SIZEOF(_BuildingString), Length, Position);
+RemoveAt := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ReplaceAt" Id="{81e47fe5-7bcc-4c2a-8791-af280ee56b98}">
+      <Declaration><![CDATA[METHOD ReplaceAt : IStringBuilder
+VAR_INPUT
+    Text : STRING(1024);
+	Position : UDINT;
+    Length : UDINT;
+END_VAR
+VAR
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BoolRes := Tc2_Utilities.REPLACE2(ADR(_BuildingString), ADR(Text), ADR(_BuildingString), SIZEOF(_BuildingString), Length, Position);
+ReplaceAt := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{3b4cc271-03d3-421f-b2fe-50bbd95d6cdb}">
+      <Declaration><![CDATA[METHOD PUBLIC Reset : ILimitedStringBuilder //Reset current build string to an empty string.]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BuildingString := '';
+Reset := THIS^;     // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Right" Id="{5c9eebce-16b4-4549-873c-40e74a589919}">
+      <Declaration><![CDATA[METHOD  Right : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Length : UDINT;
+END_VAR
+VAR
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_BoolRes := Tc2_Utilities.DELETE2(ADR(_BuildingString), ADR(_BuildingString), SIZEOF(_BuildingString), Tc2_Utilities.LEN2(ADR(_BuildingString)) - Length, 1);
+Right := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToString" Id="{0701aa11-e1f1-41fa-9e08-587883568ffd}">
+      <Declaration><![CDATA[METHOD PUBLIC ToString : STRING(2048) //Returns current build string.]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToString := _BuildingString;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToWString" Id="{ff7ad9e4-7d5b-4ada-95f9-5a10d98dae67}">
+      <Declaration><![CDATA[METHOD ToWString : WSTRING(2048) //Returns current build string.]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToWString := Tc2_Utilities.CHAR_TO_WCHAR(_BuildingString);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

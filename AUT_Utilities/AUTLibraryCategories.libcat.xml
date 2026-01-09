@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LibraryCategories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="LibraryCategories.xsd">
+    <LibraryCategory>
+        <Id>cce75ace-3bcb-4e7f-9747-707ba84f3b7c</Id>
+        <Version>1.0.0.0</Version>
+        <DefaultName>AU-tomation Toolkit</DefaultName>
+    </LibraryCategory>
+    <LibraryCategory>
+        <Id>9dafade8-ba25-49e5-bb24-c0fc962e699f</Id>
+        <Version>1.0.0.0</Version>
+        <ParentCategory>
+            <Id>cce75ace-3bcb-4e7f-9747-707ba84f3b7c</Id>
+        </ParentCategory>
+        <DefaultName>Utilities</DefaultName>
+    </LibraryCategory>
+</LibraryCategories>

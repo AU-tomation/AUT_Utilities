@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="IStringBuilder" Id="{a96f9cef-4f33-4ae4-9622-b562253d04a0}">
+    <Declaration><![CDATA[INTERFACE IStringBuilder ]]></Declaration>
+    <Method Name="Append" Id="{5802eef8-4768-447d-ac88-e4a7e9a4f4d4}">
+      <Declaration><![CDATA[METHOD  Append : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Text : STRING(1024); //Text to append to current build string
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AssignDelimitedSubstringTo" Id="{f8790f8f-2557-4c2d-a39d-d6daaf698cf6}">
+      <Declaration><![CDATA[METHOD AssignDelimitedSubstringTo : IStringBuilder
+VAR_INPUT
+    Delimiter : STRING(1);
+    SubstringIndex : UDINT;
+	Destination : POINTER TO STRING(2048);
+    DestinationSize : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="AssignTo" Id="{c9769b97-efb5-4d30-8683-906edf176a90}">
+      <Declaration><![CDATA[METHOD AssignTo : IStringBuilder
+VAR_INPUT
+	Destination : POINTER TO STRING(2048);
+    DestinationSize : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="InsertAt" Id="{240a8eb2-830b-47ca-9391-a327b097efb3}">
+      <Declaration><![CDATA[METHOD InsertAt : IStringBuilder
+VAR_INPUT
+	Text : STRING(1024);
+	Position : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Left" Id="{6d0c8a7a-145c-4460-9161-51ed4c634dd3}">
+      <Declaration><![CDATA[METHOD  Left : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Length : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Mid" Id="{dc588605-d43e-4708-9622-8e4396e24184}">
+      <Declaration><![CDATA[METHOD  Mid : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Position : UDINT;
+	Length : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="PadLeft" Id="{1d9fd8ae-5b0d-4653-9f60-32a24a7b6e77}">
+      <Declaration><![CDATA[METHOD  PadLeft : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+    PaddingChar : STRING(1);
+	TotalLength : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="PadRight" Id="{e629a050-5959-4310-a785-f6d38597d96e}">
+      <Declaration><![CDATA[METHOD  PadRight : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+    PaddingChar : STRING(1);
+	TotalLength : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="RemoveAt" Id="{ff04897d-a67c-4131-a8d9-c2aed5c52ac3}">
+      <Declaration><![CDATA[METHOD RemoveAt : IStringBuilder
+VAR_INPUT
+	Position : UDINT;
+    Length : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ReplaceAt" Id="{043e6c07-bfa2-4e4b-8723-2fd1257be72d}">
+      <Declaration><![CDATA[METHOD ReplaceAt : IStringBuilder
+VAR_INPUT
+    Text : STRING(1024);
+	Position : UDINT;
+    Length : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Reset" Id="{6597caa0-da9c-4a84-b85b-7d02773d9b7d}">
+      <Declaration><![CDATA[METHOD Reset : ILimitedStringBuilder //Reset current build string to an empty string.]]></Declaration>
+    </Method>
+    <Method Name="Right" Id="{8ab9a4b3-8843-44ac-9824-dcff801059b3}">
+      <Declaration><![CDATA[METHOD  Right : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Length : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ToString" Id="{acbc2342-d0e7-452e-9b07-7dea4bd95d81}">
+      <Declaration><![CDATA[METHOD ToString : STRING(2048) //Returns current build string.]]></Declaration>
+    </Method>
+    <Method Name="ToWString" Id="{65b50ad9-a317-4856-a5b6-0ed46815bd97}">
+      <Declaration><![CDATA[METHOD ToWString : WSTRING(2048) //Returns current build string.]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
