@@ -41,12 +41,17 @@
     <DefaultNamespace>AUT_Utilities</DefaultNamespace>
     <Author>Ing. Alberto Utili</Author>
     <Description>AU-tomation Toolkit Utilities Library</Description>
+    <GlobalVersionStructureIncluded>true</GlobalVersionStructureIncluded>
+    <POUsForPropertyAccessIncluded>true</POUsForPropertyAccessIncluded>
+    <DocFormat>TcDocGen</DocFormat>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="POUs" />
     <Folder Include="POUs\StringBuilder" />
     <Folder Include="POUs\StringBuilder\Classes" />
     <Folder Include="POUs\StringBuilder\Interfaces" />
+    <Folder Include="Project Information" />
+    <Folder Include="Version" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="POUs\StringBuilder\Classes\StringBuilder.TcPOU">
@@ -56,6 +61,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\StringBuilder\Interfaces\IStringBuilder.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project Information\F_GetCompany.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="Project Information\F_GetTitle.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="Project Information\F_GetVersion.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="Version\Global_Version.TcGVL">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
