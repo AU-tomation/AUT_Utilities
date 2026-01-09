@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="StringBuilder" Id="{8b6cce3d-fec6-455c-849a-88b106706848}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK PUBLIC StringBuilder IMPLEMENTS  IStringBuilder, ILimitedStringBuilder
+    <Declaration><![CDATA[(*! <Summary>
+StringBuilder provides several methods for building and manipulating a string.
+It uses fluent interface allowing easy composition of various operations.
+</Summary> *)
+FUNCTION_BLOCK PUBLIC StringBuilder IMPLEMENTS  IStringBuilder, ILimitedStringBuilder
 VAR
 	{attribute 'hide'}
 	_BuildingString : STRING(2048);
@@ -10,7 +14,8 @@ END_VAR]]></Declaration>
       <ST><![CDATA[]]></ST>
     </Implementation>
     <Method Name="Append" Id="{97928194-740a-46c9-9479-85912eaee214}">
-      <Declaration><![CDATA[METHOD PUBLIC Append : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[//! @Description Append a string to the string under construction
+METHOD PUBLIC Append : IStringBuilder // Append text to t current build string.
 VAR_INPUT
 	Text : STRING(1024); //Text to append to current build string
 END_VAR
