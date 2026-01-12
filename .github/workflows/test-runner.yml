@@ -21,7 +21,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-logs
-          path: C:\TwinCAT projects\AUT_Utilities\BuildLog_*.txt
+          path: C:\actions-runner\logs\AUT_Utilities\BuildLog_*.txt
 
       - name: Upload Boot Project
         uses: actions/upload-artifact@v4
