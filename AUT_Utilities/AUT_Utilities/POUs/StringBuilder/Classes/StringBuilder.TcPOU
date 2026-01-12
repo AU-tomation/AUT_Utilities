@@ -148,7 +148,7 @@ Mid := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="PadLeft" Id="{e4c48602-110f-44b4-a98f-ab2f3008da18}">
-      <Declaration><![CDATA[METHOD  PadLeft : IStringBuilder // Insert PaddingChar at the beginnning of the current built string up to TotalLength
+      <Declaration><![CDATA[METHOD  PadLeft : IStringBuilder // Insert PaddingChar at the beginning of the current built string up to TotalLength
 VAR_INPUT
     PaddingChar : STRING(1);
 	TotalLength : UDINT;
@@ -168,7 +168,7 @@ PadLeft := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="PadRight" Id="{f4859cef-2f49-40f4-b510-3cbecc19c1c4}">
-      <Declaration><![CDATA[METHOD  PadRight : IStringBuilder // Append text to the current built string.
+      <Declaration><![CDATA[METHOD  PadRight : IStringBuilder // Insert PaddingChar at the end of the current built string up to TotalLength
 VAR_INPUT
     PaddingChar : STRING(1);
 	TotalLength : UDINT;

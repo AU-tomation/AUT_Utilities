@@ -1,12 +1,12 @@
-[5:13:40 PM] The library 'Tc3_GlobalTypes_Global, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
-[5:13:40 PM] The library 'Tc3_GlobalTypes_IO, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
-[5:13:40 PM] The library 'Tc3_GlobalTypes_MC, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
-[5:13:40 PM] The library 'Tc3_GlobalTypes_TcLine, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
-[5:13:40 PM] The library 'Tc3_GlobalTypes_Safety, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
-[5:13:40 PM] The library 'Tc3_GlobalTypes_AX5000, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
-[5:13:40 PM] The library 'Tc3_GlobalTypes_VN, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
-[5:13:40 PM] The library 'Tc3_GlobalTypes, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
-Rebuild started at 5:13 PM...
+[5:32:10 PM] The library 'Tc3_GlobalTypes_Global, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
+[5:32:10 PM] The library 'Tc3_GlobalTypes_IO, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
+[5:32:10 PM] The library 'Tc3_GlobalTypes_MC, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
+[5:32:10 PM] The library 'Tc3_GlobalTypes_TcLine, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
+[5:32:10 PM] The library 'Tc3_GlobalTypes_Safety, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
+[5:32:10 PM] The library 'Tc3_GlobalTypes_AX5000, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
+[5:32:10 PM] The library 'Tc3_GlobalTypes_VN, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
+[5:32:10 PM] The library 'Tc3_GlobalTypes, 1.0.0.0 (Beckhoff Automation GmbH)' has been changed and was reloaded automatically.
+Rebuild started at 5:32 PM...
 ------ Build started: Application: AUT_Utilities_Tests_PRJ.Test -------
 Typify code...
 Generate code...
@@ -48,5 +48,5 @@ PLC.AUT_Utilities : message: generate boot information...
 ------ Rebuild All started: Project: AUT_Utilities_Tests_PRJ, Configuration: Release TwinCAT RT (x64) ------
 ------ Rebuild All started: Project: AUT_Utilities_PRJ, Configuration: Release TwinCAT RT (x64) ------
 ========== Rebuild All: 4 succeeded, 0 failed, 0 skipped ==========
-========== Rebuild completed at 5:13 PM and took 17.189 seconds ==========
+========== Rebuild completed at 5:32 PM and took 15.345 seconds ==========
 
