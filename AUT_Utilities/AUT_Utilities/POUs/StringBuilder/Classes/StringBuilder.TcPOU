@@ -224,7 +224,7 @@ Reset := THIS^;     // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="Right" Id="{5c9eebce-16b4-4549-873c-40e74a589919}">
-      <Declaration><![CDATA[METHOD  Right : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD  Right : IStringBuilder // Append text to the current built string.
 VAR_INPUT
 	Length : UDINT;
 END_VAR
