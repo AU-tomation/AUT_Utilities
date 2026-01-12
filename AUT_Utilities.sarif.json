@@ -1,0 +1,82 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "SAN",
+          "fullName": "CODESYS Static Analysis",
+          "version": "5.1.0.4",
+          "semanticVersion": "5.1.0.4",
+          "dottedQuadFileVersion": "5.1.0.4",
+          "releaseDateUtc": "2025-11-25",
+          "organization": "CODESYS Development GmbH",
+          "product": "CODESYS Professional Developer Edition",
+          "productSuite": "CODESYS Engineering",
+          "shortDescription": {
+            "text": "The static analysis tool in CODESYS."
+          },
+          "fullDescription": {
+            "text": "The static analysis tool in CODESYS."
+          },
+          "informationUri": "https://content.helpme-codesys.com/en/CODESYS%20Static%20Analysis/_san_overview.html",
+          "properties": {
+            "copyright": "Copyright (c) 2017-2025 CODESYS Development GmbH"
+          },
+          "rules": [
+            {
+              "id": "SA0004",
+              "fullDescription": {
+                "text": "Multiple write access on output"
+              }
+            },
+            {
+              "id": "SA0006",
+              "fullDescription": {
+                "text": "Write access from several tasks"
+              }
+            },
+            {
+              "id": "SA0027",
+              "fullDescription": {
+                "text": "Multiple uses of identifiers"
+              }
+            },
+            {
+              "id": "SA0028",
+              "fullDescription": {
+                "text": "Overlapping memory areas"
+              }
+            },
+            {
+              "id": "SA0033",
+              "fullDescription": {
+                "text": "Unused variables"
+              }
+            },
+            {
+              "id": "SA0167",
+              "fullDescription": {
+                "text": "Report temporary FunctionBlock instances"
+              }
+            },
+            {
+              "id": "SA0175",
+              "fullDescription": {
+                "text": "Suspicious operation on string"
+              }
+            }
+          ]
+        }
+      },
+      "originalUriBaseIds": {
+        "CHECKOUTFOLDER": {
+          "uri": "file:///C:/TwinCAT%20projects/AUT_Utilities/AUT_Utilities.project"
+        }
+      },
+      "artifacts": [],
+      "results": []
+    }
+  ]
+}

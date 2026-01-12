@@ -1,0 +1,14 @@
+name: Test TwinCAT Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, windows, twincat]
+    steps:
+      - name: Check runner
+        run: |
+          echo "Runner OK"
+          whoami
+          hostname

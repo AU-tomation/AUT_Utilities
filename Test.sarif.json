@@ -1,0 +1,209 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "SAN",
+          "fullName": "CODESYS Static Analysis",
+          "version": "5.1.0.4",
+          "semanticVersion": "5.1.0.4",
+          "dottedQuadFileVersion": "5.1.0.4",
+          "releaseDateUtc": "2025-11-25",
+          "organization": "CODESYS Development GmbH",
+          "product": "CODESYS Professional Developer Edition",
+          "productSuite": "CODESYS Engineering",
+          "shortDescription": {
+            "text": "The static analysis tool in CODESYS."
+          },
+          "fullDescription": {
+            "text": "The static analysis tool in CODESYS."
+          },
+          "informationUri": "https://content.helpme-codesys.com/en/CODESYS%20Static%20Analysis/_san_overview.html",
+          "properties": {
+            "copyright": "Copyright (c) 2017-2025 CODESYS Development GmbH"
+          },
+          "rules": [
+            {
+              "id": "SA0004",
+              "fullDescription": {
+                "text": "Multiple write access on output"
+              }
+            },
+            {
+              "id": "SA0006",
+              "fullDescription": {
+                "text": "Write access from several tasks"
+              }
+            },
+            {
+              "id": "SA0027",
+              "fullDescription": {
+                "text": "Multiple uses of identifiers"
+              }
+            },
+            {
+              "id": "SA0028",
+              "fullDescription": {
+                "text": "Overlapping memory areas"
+              }
+            },
+            {
+              "id": "SA0033",
+              "fullDescription": {
+                "text": "Unused variables"
+              }
+            },
+            {
+              "id": "SA0167",
+              "fullDescription": {
+                "text": "Report temporary FunctionBlock instances"
+              }
+            },
+            {
+              "id": "SA0175",
+              "fullDescription": {
+                "text": "Suspicious operation on string"
+              }
+            }
+          ]
+        }
+      },
+      "originalUriBaseIds": {
+        "CHECKOUTFOLDER": {
+          "uri": "file:///C:/TwinCAT%20projects/AUT_Utilities/AUT_Utilities.project"
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/AppendABCTo123EqualsABC123",
+            "uriBaseId": "CHECKOUTFOLDER"
+          },
+          "sourceLanguage": "Structured Text (ST)"
+        },
+        {
+          "location": {
+            "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/InsertXYZAt3IntoABC123EqualsABCXYZ123",
+            "uriBaseId": "CHECKOUTFOLDER"
+          },
+          "sourceLanguage": "Structured Text (ST)"
+        },
+        {
+          "location": {
+            "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/LeftOfABC123With3EqualsABC",
+            "uriBaseId": "CHECKOUTFOLDER"
+          },
+          "sourceLanguage": "Structured Text (ST)"
+        },
+        {
+          "location": {
+            "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/MultipleOperations",
+            "uriBaseId": "CHECKOUTFOLDER"
+          },
+          "sourceLanguage": "Structured Text (ST)"
+        },
+        {
+          "location": {
+            "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/RightOfABC123With3Equals123",
+            "uriBaseId": "CHECKOUTFOLDER"
+          },
+          "sourceLanguage": "Structured Text (ST)"
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "SA0167",
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Temporary function block instance: '_StringBuilder'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/MultipleOperations",
+                  "uriBaseId": "CHECKOUTFOLDER"
+                },
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 1,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "    _StringBuilder : StringBuilder;"
+                  }
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/InsertXYZAt3IntoABC123EqualsABCXYZ123",
+                  "uriBaseId": "CHECKOUTFOLDER"
+                },
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 1,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "    _StringBuilder : StringBuilder;"
+                  }
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/LeftOfABC123With3EqualsABC",
+                  "uriBaseId": "CHECKOUTFOLDER"
+                },
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 1,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "    _StringBuilder : StringBuilder;"
+                  }
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/AppendABCTo123EqualsABC123",
+                  "uriBaseId": "CHECKOUTFOLDER"
+                },
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 1,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "    _StringBuilder : StringBuilder;"
+                  }
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "AUT_Utilities_Tests_PRJ/PLC/Test/StringBuilder_Test/RightOfABC123With3Equals123",
+                  "uriBaseId": "CHECKOUTFOLDER"
+                },
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 1,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "    _StringBuilder : StringBuilder;"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
