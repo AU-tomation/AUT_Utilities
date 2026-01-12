@@ -6,17 +6,17 @@
     <Method Name="Append" Id="{cb85310e-4987-4cc7-8a05-9832a0be426b}">
       <Declaration><![CDATA[METHOD  Append : IStringBuilder // Append text to t current build string.
 VAR_INPUT
-	Text : STRING(1024); //Text to append to current build string
+	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); //Text to append to current build string
 END_VAR]]></Declaration>
     </Method>
     <Method Name="Reset" Id="{ebe76031-5bda-45af-a5b1-6f04a5768308}">
       <Declaration><![CDATA[METHOD Reset : ILimitedStringBuilder //Reset current build string to an empty string.]]></Declaration>
     </Method>
     <Method Name="ToString" Id="{5e66f779-8a90-4f31-b710-213cc3abfd38}">
-      <Declaration><![CDATA[METHOD ToString : STRING(2048)    //Returns current build string.]]></Declaration>
+      <Declaration><![CDATA[METHOD ToString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength)    //Returns current build string.]]></Declaration>
     </Method>
     <Method Name="ToWString" Id="{9fa4eae6-5cd2-4dcf-a3e4-15e1a138eff3}">
-      <Declaration><![CDATA[METHOD ToWString : WSTRING(2048) //Returns current build string.]]></Declaration>
+      <Declaration><![CDATA[METHOD ToWString : WSTRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) //Returns current build string.]]></Declaration>
     </Method>
   </Itf>
 </TcPlcObject>

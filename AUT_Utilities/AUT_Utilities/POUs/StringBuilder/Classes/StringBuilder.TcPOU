@@ -8,16 +8,16 @@ It uses fluent interface allowing easy composition of various operations.
 FUNCTION_BLOCK PUBLIC StringBuilder IMPLEMENTS  IStringBuilder, ILimitedStringBuilder
 VAR
 	{attribute 'hide'}
-	_BuildingString : STRING(2048);
+	_BuildingString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
     <Method Name="Append" Id="{97928194-740a-46c9-9479-85912eaee214}">
       <Declaration><![CDATA[//! @Description Append a string to the string under construction
-METHOD PUBLIC Append : IStringBuilder // Append text to t current build string.
+METHOD PUBLIC Append : IStringBuilder // Append text to the current built string.
 VAR_INPUT
-	Text : STRING(1024); //Text to append to current build string
+	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); //Text to append to current build string
 END_VAR
 VAR
     _BoolRes : BOOL;
@@ -33,7 +33,7 @@ Append := THIS^;    // Fluent interface]]></ST>
 VAR_INPUT
     Delimiter : STRING(1);
     SubstringIndex : UDINT;
-	Destination : POINTER TO STRING(2048);
+	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
     DestinationSize : UDINT;
 END_VAR
 VAR
@@ -94,7 +94,7 @@ AssignDelimitedSubstringTo := THIS^;      // Fluent interface]]></ST>
     <Method Name="AssignTo" Id="{0a14c808-fbd9-4bbc-a2f1-b424d90eeaab}">
       <Declaration><![CDATA[METHOD AssignTo : IStringBuilder
 VAR_INPUT
-	Destination : POINTER TO STRING(2048);
+	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
     DestinationSize : UDINT;
 END_VAR
 VAR
@@ -108,7 +108,7 @@ AssignTo := THIS^;      // Fluent interface]]></ST>
     <Method Name="InsertAt" Id="{e92c66b5-b697-4308-a175-1131aa42cb77}">
       <Declaration><![CDATA[METHOD PUBLIC InsertAt : IStringBuilder
 VAR_INPUT
-	Text : STRING(1024);
+	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
 	Position : UDINT;
 END_VAR
 VAR
@@ -155,7 +155,7 @@ VAR_INPUT
 END_VAR
 VAR
     _Index : UDINT;
-    _PaddingString : STRING(1024) := '';
+    _PaddingString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) := '';
     _BoolRes : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
@@ -175,7 +175,7 @@ VAR_INPUT
 END_VAR
 VAR
     _Index : UDINT;
-    _PaddingString : STRING(1024) := '';
+    _PaddingString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) := '';
     _BoolRes : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
@@ -204,7 +204,7 @@ RemoveAt := THIS^;      // Fluent interface]]></ST>
     <Method Name="ReplaceAt" Id="{81e47fe5-7bcc-4c2a-8791-af280ee56b98}">
       <Declaration><![CDATA[METHOD ReplaceAt : IStringBuilder
 VAR_INPUT
-    Text : STRING(1024);
+    Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
 	Position : UDINT;
     Length : UDINT;
 END_VAR
@@ -237,13 +237,19 @@ Right := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="ToString" Id="{0701aa11-e1f1-41fa-9e08-587883568ffd}">
-      <Declaration><![CDATA[METHOD PUBLIC ToString : STRING(2048) //Returns current build string.]]></Declaration>
+      <Declaration><![CDATA[(* <Description>
+Returns current built string.
+   </Description> *)
+METHOD PUBLIC ToString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) //Returns current built string.]]></Declaration>
       <Implementation>
         <ST><![CDATA[ToString := _BuildingString;]]></ST>
       </Implementation>
     </Method>
     <Method Name="ToWString" Id="{ff7ad9e4-7d5b-4ada-95f9-5a10d98dae67}">
-      <Declaration><![CDATA[METHOD ToWString : WSTRING(2048) //Returns current build string.]]></Declaration>
+      <Declaration><![CDATA[(* <Description>
+Returns current built string as wide string.
+   </Description> *)
+METHOD ToWString : WSTRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength)]]></Declaration>
       <Implementation>
         <ST><![CDATA[ToWString := Tc2_Utilities.CHAR_TO_WCHAR(_BuildingString);]]></ST>
       </Implementation>
