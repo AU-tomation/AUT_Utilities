@@ -168,7 +168,7 @@ PadLeft := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="PadRight" Id="{f4859cef-2f49-40f4-b510-3cbecc19c1c4}">
-      <Declaration><![CDATA[METHOD  PadRight : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD  PadRight : IStringBuilder // Append text to the current built string.
 VAR_INPUT
     PaddingChar : STRING(1);
 	TotalLength : UDINT;
