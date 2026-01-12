@@ -28,3 +28,15 @@ jobs:
         with:
           name: boot-project
           path: C:\TwinCAT projects\AUT_Utilities\_Boot\
+
+      - name: Upload TE1200 Light SARIF
+        uses: actions/upload-artifact@v4
+        with:
+          name: te1200-sarif
+          path: C:\actions-runner\logs\AUT_Utilities\StaticAnalysis_*.sarif
+
+      - name: Upload SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: C:\actions-runner\logs\AUT_Utilities\StaticAnalysis_*.sarif
+
