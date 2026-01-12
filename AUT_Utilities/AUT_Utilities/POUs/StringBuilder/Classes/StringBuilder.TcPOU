@@ -120,7 +120,7 @@ InsertAt := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="Left" Id="{8830457f-8ba5-4b91-b336-a8c2e5712763}">
-      <Declaration><![CDATA[METHOD  Left : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD  Left : IStringBuilder // Append text to the current built string.
 VAR_INPUT
 	Length : UDINT;
 END_VAR
