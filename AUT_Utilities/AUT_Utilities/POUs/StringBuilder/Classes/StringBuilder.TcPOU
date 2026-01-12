@@ -133,7 +133,7 @@ Left := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="Mid" Id="{a790806c-0997-4e8a-953a-514ec7fcd716}">
-      <Declaration><![CDATA[METHOD  Mid : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD  Mid : IStringBuilder // Append text to the current built string.
 VAR_INPUT
 	Position : UDINT;
 	Length : UDINT;

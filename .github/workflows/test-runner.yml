@@ -1,14 +1,17 @@
-name: Test TwinCAT Runner
+name: TwinCAT Build
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
-  test:
+  build:
     runs-on: [self-hosted, windows, twincat]
+
     steps:
-      - name: Check runner
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build TwinCAT solution
         run: |
-          echo "Runner OK"
-          whoami
-          hostname
+          powershell -ExecutionPolicy Bypass -File "C:\actions-runner\scripts\build-twincat.ps1"
