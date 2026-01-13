@@ -40,3 +40,21 @@ jobs:
         with:
           sarif_file: C:\actions-runner\logs\AUT_Utilities\StaticAnalysis_*.sarif
 
+      # ============================================================
+      # TcUnit - Upload risultati test
+      # ============================================================
+      - name: Upload TcUnit test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: tcunit-results
+          path: C:\actions-runner\logs\AUT_Utilities\TcUnitResults_*.xml
+
+      # ============================================================
+      # TcUnit - Pubblica risultati test nella UI GitHub
+      # ============================================================
+      - name: Publish TcUnit test results
+        uses: dorny/test-reporter@v1
+        with:
+          name: TcUnit Tests
+          path: C:\actions-runner\logs\AUT_Utilities\TcUnitResults_*.xml
+          reporter: junit

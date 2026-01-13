@@ -47,12 +47,7 @@ VAR
     _BoolRes : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// FOR _Index := 1 TO (SubstringIndex - 1) DO
-//     _LeadingDelimiterPosition := Tc2_Utilities.FIND2(ADR(_BuildingString), ADR(Delimiter))
-//     
-// END_FOR
-
-// ATTENTION: pointer arithmetics is used to move inside string
+        <ST><![CDATA[// ATTENTION: pointer arithmetics is used to move inside string
 IF SubstringIndex < 1 THEN
     SubstringIndex := 1;
 END_IF
