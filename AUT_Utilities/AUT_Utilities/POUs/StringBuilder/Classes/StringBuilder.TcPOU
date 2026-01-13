@@ -2,7 +2,6 @@
 <TcPlcObject Version="1.1.0.1">
   <POU Name="StringBuilder" Id="{8b6cce3d-fec6-455c-849a-88b106706848}" SpecialFunc="None">
     <Declaration><![CDATA[(*! <Summary>
-AU-tomation
 StringBuilder provides several methods for building and manipulating a string.
 It uses fluent interface allowing easy composition of various operations.
 </Summary> *)
