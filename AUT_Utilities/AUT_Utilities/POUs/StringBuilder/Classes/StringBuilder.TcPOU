@@ -80,7 +80,6 @@ ELSE
     ELSE
         _BoolRes := Tc2_Utilities.STRNCPY(ADR(_Substring), ADR(_BuildingString) + _LeadingDelimiterPosition, _TrailingDelimiterPosition - _LeadingDelimiterPosition);
     END_IF
-    //_Substring[_TrailingDelimiterPosition - _LeadingDelimiterPosition] := 0;    // Put Null terminator at the end of the substring
     _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);   
 END_IF
 AssignDelimitedSubstringTo := THIS^;      // Fluent interface]]></ST>
