@@ -211,7 +211,7 @@ ReplaceAt := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reset" Id="{3b4cc271-03d3-421f-b2fe-50bbd95d6cdb}">
-      <Declaration><![CDATA[METHOD PUBLIC Reset : ILimitedStringBuilder //Reset current build string to an empty string.]]></Declaration>
+      <Declaration><![CDATA[METHOD PUBLIC Reset : ILimitedStringBuilder //Reset current built string to an empty string.]]></Declaration>
       <Implementation>
         <ST><![CDATA[_BuildingString := '';
 Reset := THIS^;     // Fluent interface]]></ST>
