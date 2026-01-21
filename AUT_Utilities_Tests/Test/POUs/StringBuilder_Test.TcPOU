@@ -53,13 +53,13 @@ END_VAR
       <Implementation>
         <ST><![CDATA[TEST('AppendWithFormat');
 
-// // Format decimal constant to hex
-// _ResultString := _StringBuilder.AppendWithFormat(F_DINT(DINT#255), '%X')
-//                                 .ToString();
-//                                
-// AssertEquals_String(Expected := 'FF',
-//              Actual := _ResultString,
-//              Message := 'The result is not correct');
+// Format decimal constant to hex
+_ResultString := _StringBuilder.AppendWithFormat(DINT#255, '%X')
+                               .ToString();
+                               
+AssertEquals_String(Expected := 'FF',
+             Actual := _ResultString,
+             Message := 'The result is not correct');
 
 // Format DINT variable to hex
 _ResultString := _StringBuilder.Reset()
