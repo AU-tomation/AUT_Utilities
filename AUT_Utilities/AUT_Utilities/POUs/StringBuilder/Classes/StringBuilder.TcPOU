@@ -4,6 +4,7 @@
     <Declaration><![CDATA[(*! <Summary>
 StringBuilder provides several methods for building and manipulating a string.
 It uses fluent interface allowing easy composition of various operations.
+It is a wrapper around Beckhoff Tc2_Utilities: therefore it has similar limitations
 </Summary> *)
 FUNCTION_BLOCK PUBLIC StringBuilder IMPLEMENTS  IStringBuilder, ILimitedStringBuilder
 VAR
@@ -28,6 +29,57 @@ END_VAR
 Append := THIS^;    // Fluent interface]]></ST>
       </Implementation>
     </Method>
+    <Method Name="AppendWithFormat" Id="{60116ab5-037b-4083-8602-0f8aed205f47}">
+      <Declaration><![CDATA[METHOD  AppendWithFormat : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Value : ANY;   // T_Arg; // Value to format
+	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Format to apply 
+END_VAR
+VAR
+    _FormatString2 : Tc2_Utilities.FB_FormatString2;
+    _FormattedText : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
+    _BoolRes : BOOL;
+    _BoolError : BOOL;
+    _arg1 : T_Arg;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Format specifications (between [] are optional)
+// %[flags][width][.precision].type
+
+_arg1.cbLen := DINT_TO_UDINT(Value.diSize);
+_arg1.pData := Value.pValue;
+CASE Value.TypeClass OF
+    __SYSTEM.TYPE_CLASS.TYPE_INT:      _arg1.eType := E_ArgType.ARGTYPE_INT;
+    __SYSTEM.TYPE_CLASS.TYPE_DINT:     _arg1.eType := E_ArgType.ARGTYPE_DInt;
+    __SYSTEM.TYPE_CLASS.TYPE_UINT:     _arg1.eType := E_ArgType.ARGTYPE_UInt;
+    __SYSTEM.TYPE_CLASS.TYPE_UDINT:    _arg1.eType := E_ArgType.ARGTYPE_UDInt;
+    __SYSTEM.TYPE_CLASS.TYPE_REAL:     _arg1.eType := E_ArgType.ARGTYPE_Real;
+    __SYSTEM.TYPE_CLASS.TYPE_LREAL:    _arg1.eType := E_ArgType.ARGTYPE_LReal;
+    __SYSTEM.TYPE_CLASS.TYPE_STRING:   _arg1.eType := E_ArgType.ARGTYPE_String;
+    __SYSTEM.TYPE_CLASS.TYPE_BOOL:     _arg1.eType := E_ArgType.ARGTYPE_Bool;
+    __SYSTEM.TYPE_CLASS.TYPE_BYTE:     _arg1.eType := E_ArgType.ARGTYPE_Byte;
+    __SYSTEM.TYPE_CLASS.TYPE_WORD:     _arg1.eType := E_ArgType.ARGTYPE_Word;
+    __SYSTEM.TYPE_CLASS.TYPE_DWORD:    _arg1.eType := E_ArgType.ARGTYPE_DWord;
+ELSE
+    _arg1.eType := E_ArgType.ARGTYPE_UNKNOWN;
+    _BoolError := TRUE;
+END_CASE
+
+IF NOT _BoolError THEN
+    _FormatString2(pFormatString := ADR(Format),
+                   arg1 := _arg1,
+                   pDstString := ADR(_FormattedText), 
+                   nDstSize := SIZEOF(_FormattedText),
+                   bError => _BoolError);
+END_IF
+
+IF NOT _BoolError THEN
+    Append(_FormattedText);
+END_IF
+AppendWithFormat := THIS^;    // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="AssignDelimitedSubstringTo" Id="{698e6e2e-63f1-4fb0-889a-0788275ac183}">
       <Declaration><![CDATA[METHOD AssignDelimitedSubstringTo : IStringBuilder
 VAR_INPUT
@@ -49,7 +101,10 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// ATTENTION: pointer arithmetics is used to move inside string
 IF SubstringIndex < 1 THEN
-    SubstringIndex := 1;
+    // Assign empty string
+    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);   
+    AssignDelimitedSubstringTo := THIS^;      // Fluent interface
+    RETURN;
 END_IF
 REPEAT
     _CurrentDelimiterPosition := Tc2_Utilities.FIND2(ADR(_BuildingString) + _CurrentPosition, ADR(Delimiter));
@@ -63,7 +118,7 @@ REPEAT
             _TrailingDelimiterPosition := _CurrentPosition;
         END_IF
     END_IF
-    UNTIL _CurrentDelimiterPosition = 0 OR _CurrentDelimiterIndex = SubstringIndex
+UNTIL _CurrentDelimiterPosition = 0 OR _CurrentDelimiterIndex = SubstringIndex
 END_REPEAT
 
 IF _CurrentDelimiterIndex = 0 THEN
@@ -193,6 +248,61 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[_BoolRes := Tc2_Utilities.DELETE2(ADR(_BuildingString), ADR(_BuildingString), SIZEOF(_BuildingString), Length, Position);
 RemoveAt := THIS^;      // Fluent interface]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RemoveDelimitedSubstring" Id="{0143fc6b-15b0-4de9-ba76-313e88c96427}">
+      <Declaration><![CDATA[METHOD RemoveDelimitedSubstring : IStringBuilder
+VAR_INPUT
+    Delimiter : STRING(1);
+    SubstringIndex : UDINT;
+END_VAR
+VAR
+    _CurrentPosition : UDINT := 0;
+    _CurrentDelimiterPosition : UDINT := 0;
+    _CurrentDelimiterIndex : UDINT := 0;
+    _LeadingDelimiterPosition : UDINT := 0;
+    _TrailingDelimiterPosition : UDINT := 0;
+    _Substring : STRING(2048) := '';
+    _Index : UDINT;
+    _BoolRes : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// ATTENTION: pointer arithmetics is used in FIND2 function
+IF SubstringIndex < 1 THEN
+    RemoveDelimitedSubstring := THIS^;      // Fluent interface
+    RETURN;
+END_IF
+REPEAT
+    // Find next delimiter: the address point to beginning of string or to first char following last delimiter found (address arithmetic)
+    _CurrentDelimiterPosition := Tc2_Utilities.FIND2(ADR(_BuildingString) + _CurrentPosition, ADR(Delimiter));
+    IF _CurrentDelimiterPosition > 0 THEN
+        // Delimiter found
+        _CurrentPosition := _CurrentPosition + _CurrentDelimiterPosition;       //Base-1 string position
+        _CurrentDelimiterIndex := _CurrentDelimiterIndex + 1;
+        IF _CurrentDelimiterIndex = (SubstringIndex - 1) THEN
+            _LeadingDelimiterPosition := _CurrentPosition;      //Base-1 string position
+        END_IF
+        IF _CurrentDelimiterIndex = SubstringIndex THEN
+            _TrailingDelimiterPosition := _CurrentPosition;     //Base-1 string position
+        END_IF
+    ELSE
+        // Delimiter not found: consider remaining string chunk as last substring
+        IF _CurrentDelimiterIndex = (SubstringIndex - 1) THEN
+            IF _CurrentDelimiterIndex > 0 THEN
+                _LeadingDelimiterPosition := _LeadingDelimiterPosition - 1;
+            END_IF
+            _TrailingDelimiterPosition := LEN2(ADR(_BuildingString));
+            _CurrentDelimiterIndex := _CurrentDelimiterIndex + 1;
+        END_IF
+    END_IF
+UNTIL _CurrentDelimiterPosition = 0 OR _CurrentDelimiterIndex = SubstringIndex
+END_REPEAT
+
+IF _CurrentDelimiterIndex > 0 AND SubstringIndex = _CurrentDelimiterIndex THEN
+    // Delimiters were found: remove requested substring
+    _BoolRes := Tc2_Utilities.DELETE2(ADR(_BuildingString), ADR(_BuildingString), SIZEOF(_BuildingString), _TrailingDelimiterPosition - _LeadingDelimiterPosition, _LeadingDelimiterPosition + 1);
+END_IF
+RemoveDelimitedSubstring := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="ReplaceAt" Id="{81e47fe5-7bcc-4c2a-8791-af280ee56b98}">

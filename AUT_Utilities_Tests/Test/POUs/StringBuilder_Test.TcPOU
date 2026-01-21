@@ -5,15 +5,21 @@
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[AppendABCTo123EqualsABC123();
+      <ST><![CDATA[ToStringWithoutAppendEqualsEmptyString();
+AppendABCTo123EqualsABC123();
+AppendWithFormat();
 LeftOfABC123With3EqualsABC();
 RightOfABC123With3Equals123();
 InsertXYZAt3IntoABC123EqualsABCXYZ123();
-MultipleOperations();]]></ST>
+MultipleOperations();
+RemoveDelimitedSubstring();
+AssignDelimitedSubstring();
+]]></ST>
     </Implementation>
     <Method Name="AppendABCTo123EqualsABC123" Id="{aa6b89ed-4bdc-434e-afc7-026d1f7cb7d6}">
       <Declaration><![CDATA[METHOD AppendABCTo123EqualsABC123
 VAR
+    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
     _ExpectedResultString : STRING(2048) := 'ABC123';
@@ -29,6 +35,134 @@ _ResultString := _StringBuilder.Append('ABC')
 AssertEquals_String(Expected := _ExpectedResultString,
              Actual := _ResultString,
              Message := 'The result is not correct');
+
+TEST_FINISHED();                             ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AppendWithFormat" Id="{3567cf6b-28d8-4a37-86f0-622336f0c29c}">
+      <Declaration><![CDATA[METHOD AppendWithFormat
+VAR
+    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance
+    _StringBuilder : StringBuilder;
+    _ResultString : STRING(2048) := '';
+END_VAR
+VAR
+    _DIntValue : DINT := 255;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('AppendWithFormat');
+
+// // Format decimal constant to hex
+// _ResultString := _StringBuilder.AppendWithFormat(F_DINT(DINT#255), '%X')
+//                                 .ToString();
+//                                
+// AssertEquals_String(Expected := 'FF',
+//              Actual := _ResultString,
+//              Message := 'The result is not correct');
+
+// Format DINT variable to hex
+_ResultString := _StringBuilder.Reset()
+                               .AppendWithFormat(_DIntValue, '%X')
+                               .ToString();
+                               
+AssertEquals_String(Expected := 'FF',
+             Actual := _ResultString,
+             Message := 'The result is not correct');
+
+// Format DINT variable to 5 digits with leading zeros
+_ResultString := _StringBuilder.Reset()
+                               .AppendWithFormat(_DIntValue, '%05d')
+                               .ToString();
+                               
+AssertEquals_String(Expected := '  255',
+             Actual := _ResultString,
+             Message := 'The result is not correct');
+
+TEST_FINISHED();                             ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AssignDelimitedSubstring" Id="{762e7bde-9f80-4dd4-b147-b40c8c38ef3d}">
+      <Declaration><![CDATA[METHOD AssignDelimitedSubstring
+VAR
+    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance
+    _StringBuilder : StringBuilder;
+    _ResultString : STRING(2048) := '';
+    _StringToAssignTo : STRING(2048);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('AssignDelimitedSubstring');
+
+// Assign first delimited substring
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .AssignDelimitedSubstringTo('/', 1, ADR(_StringToAssignTo), SIZEOF(_StringToAssignTo))
+                               .ToString();
+                               
+AssertEquals_String(Expected := '^',
+             Actual := _StringToAssignTo,
+             Message := 'Assign first delimited substring failed');
+
+// Assign mid delimited substring
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .AssignDelimitedSubstringTo('/', 2, ADR(_StringToAssignTo), SIZEOF(_StringToAssignTo))
+                               .ToString();
+                               
+AssertEquals_String(Expected := 'ABC',
+             Actual := _StringToAssignTo,
+             Message := 'Assign mid delimited substring failed');
+
+// Assign last delimited substring
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .AssignDelimitedSubstringTo('/', 3, ADR(_StringToAssignTo), SIZEOF(_StringToAssignTo))
+                               .ToString();
+                               
+AssertEquals_String(Expected := '123',
+             Actual := _StringToAssignTo,
+             Message := 'Assign last delimited substring failed');
+
+// Assign delimited substring with index 0 (not allowed: return empty string)
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .AssignDelimitedSubstringTo('/', 0, ADR(_StringToAssignTo), SIZEOF(_StringToAssignTo))
+                               .ToString();
+                               
+AssertEquals_String(Expected := '',
+             Actual := _StringToAssignTo,
+             Message := 'Assign delimited substring with index 0 failed');
+
+// Assign delimited substring with index greater than available (return empty string)
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .AssignDelimitedSubstringTo('/', 4, ADR(_StringToAssignTo), SIZEOF(_StringToAssignTo))
+                               .ToString();
+                               
+AssertEquals_String(Expected := '',
+             Actual := _StringToAssignTo,
+             Message := 'Assign delimited substring with index greater than available failed');
+
+// Assign delimited substring when only one substring with no delimiters
+_ResultString := _StringBuilder.Reset()
+                               .Append('ABC')
+                               .AssignDelimitedSubstringTo('/', 1, ADR(_StringToAssignTo), SIZEOF(_StringToAssignTo))
+                               .ToString();
+                               
+AssertEquals_String(Expected := 'ABC',
+             Actual := _StringToAssignTo,
+             Message := 'Assign delimited substring when only one substring with no delimiters');
 
 TEST_FINISHED();                             ]]></ST>
       </Implementation>
@@ -82,7 +216,6 @@ TEST_FINISHED();                             ]]></ST>
 VAR
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
-    _Expected_ResultStringString : STRING(2048) := 'ABCXYZ123';
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -131,6 +264,89 @@ AssertEquals_STRING('', _ResultString, 'Reset should produce empty string');
 TEST_FINISHED();  ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="RemoveDelimitedSubstring" Id="{c1f342dd-8711-4a15-9753-a84e0da98f72}">
+      <Declaration><![CDATA[METHOD RemoveDelimitedSubstring
+VAR
+    _StringBuilder : StringBuilder;
+    _ResultString : STRING(2048) := '';
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('RemoveDelimitedSubstring');
+
+// Remove first delimited substring
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .RemoveDelimitedSubstring('/', 1)
+                               .ToString();
+                               
+AssertEquals_String(Expected := 'ABC/123',
+             Actual := _ResultString,
+             Message := 'Remove first delimited substring failed');
+
+// Remove mid delimited substring
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .RemoveDelimitedSubstring('/', 2)
+                               .ToString();
+                               
+AssertEquals_String(Expected := '^/123',
+             Actual := _ResultString,
+             Message := 'Remove mid delimited substring failed');
+
+// Remove last delimited substring
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .RemoveDelimitedSubstring('/', 3)
+                               .ToString();
+                               
+AssertEquals_String(Expected := '^/ABC',
+             Actual := _ResultString,
+             Message := 'Remove last delimited substring failed');
+
+// Remove delimited substring with index 0 (not allowed: no operations)
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .RemoveDelimitedSubstring('/', 0)
+                               .ToString();
+                               
+AssertEquals_String(Expected := '^/ABC/123',
+             Actual := _ResultString,
+             Message := 'Remove delimited substring with index 0 failed');
+
+// Remove delimited substring with index greater than available (no operations)
+_ResultString := _StringBuilder.Reset()
+                               .Append('^/')
+                               .Append('ABC/')
+                               .Append('123')
+                               .RemoveDelimitedSubstring('/', 4)
+                               .ToString();
+                               
+AssertEquals_String(Expected := '^/ABC/123',
+             Actual := _ResultString,
+             Message := 'Remove delimited substring with index greater than available failed');
+
+// Remove delimited substring when only one substring with no delimiters
+_ResultString := _StringBuilder.Reset()
+                               .Append('ABC')
+                               .RemoveDelimitedSubstring('/', 1)
+                               .ToString();
+                               
+AssertEquals_String(Expected := '',
+             Actual := _ResultString,
+             Message := 'Remove delimited substring when only one substring with no delimiters');
+
+TEST_FINISHED();                             ]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="RightOfABC123With3Equals123" Id="{e2fd2f63-e778-4065-baf4-c1e4ad69b2aa}">
       <Declaration><![CDATA[METHOD RightOfABC123With3Equals123
 VAR
@@ -145,6 +361,26 @@ _ResultString := _StringBuilder.Append('ABC')
                                .Append('123')
                                .Right(3)
                                .ToString();
+                               
+AssertEquals_String(Expected := _ExpectedResultString,
+             Actual := _ResultString,
+             Message := 'The result is not correct');
+
+TEST_FINISHED();                             ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToStringWithoutAppendEqualsEmptyString" Id="{2abc977b-b36c-4a1c-8663-c42e2a39637e}">
+      <Declaration><![CDATA[METHOD ToStringWithoutAppendEqualsEmptyString
+VAR
+    _StringBuilder : StringBuilder;
+    _ResultString : STRING(2048) := '';
+    _ExpectedResultString : STRING(2048) := '';
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('ToStringWithoutAppendEqualsEmptyString');
+
+_ResultString := _StringBuilder.ToString();
                                
 AssertEquals_String(Expected := _ExpectedResultString,
              Actual := _ResultString,

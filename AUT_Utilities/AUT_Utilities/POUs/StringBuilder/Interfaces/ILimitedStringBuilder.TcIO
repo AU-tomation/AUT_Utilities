@@ -9,6 +9,13 @@ VAR_INPUT
 	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); //Text to append to current build string
 END_VAR]]></Declaration>
     </Method>
+    <Method Name="AppendWithFormat" Id="{dabae837-2235-48b2-a5a9-95583277cf7a}">
+      <Declaration><![CDATA[METHOD  AppendWithFormat : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Value : ANY;    //T_Arg; // Value to format
+	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Format to apply 
+END_VAR]]></Declaration>
+    </Method>
     <Method Name="Reset" Id="{ebe76031-5bda-45af-a5b1-6f04a5768308}">
       <Declaration><![CDATA[METHOD Reset : ILimitedStringBuilder //Reset current build string to an empty string.]]></Declaration>
     </Method>

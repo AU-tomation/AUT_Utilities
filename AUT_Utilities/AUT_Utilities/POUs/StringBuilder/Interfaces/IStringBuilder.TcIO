@@ -8,6 +8,13 @@ VAR_INPUT
 	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); //Text to append to current build string
 END_VAR]]></Declaration>
     </Method>
+    <Method Name="AppendWithFormat" Id="{df05e3dc-baf8-4636-8c44-47459edd0d1f}">
+      <Declaration><![CDATA[METHOD  AppendWithFormat : IStringBuilder // Append text to t current build string.
+VAR_INPUT
+	Value : ANY;    //T_Arg; // Value to format
+	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Format to apply 
+END_VAR]]></Declaration>
+    </Method>
     <Method Name="AssignDelimitedSubstringTo" Id="{f8790f8f-2557-4c2d-a39d-d6daaf698cf6}">
       <Declaration><![CDATA[METHOD AssignDelimitedSubstringTo : IStringBuilder
 VAR_INPUT
@@ -63,6 +70,13 @@ END_VAR]]></Declaration>
 VAR_INPUT
 	Position : UDINT;
     Length : UDINT;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="RemoveDelimitedSubstring" Id="{a4e60b66-0e3c-4e6e-a56f-5cfb7268a908}">
+      <Declaration><![CDATA[METHOD RemoveDelimitedSubstring : IStringBuilder
+VAR_INPUT
+    Delimiter : STRING(1);
+    SubstringIndex : UDINT;
 END_VAR]]></Declaration>
     </Method>
     <Method Name="ReplaceAt" Id="{043e6c07-bfa2-4e4b-8723-2fd1257be72d}">
