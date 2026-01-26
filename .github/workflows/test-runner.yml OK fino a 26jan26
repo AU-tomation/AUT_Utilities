@@ -1,0 +1,30 @@
+name: TwinCAT Build
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [self-hosted, windows, twincat]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build TwinCAT solution
+        run: |
+          powershell -ExecutionPolicy Bypass -File "C:\actions-runner\scripts\build-twincat.ps1"
+
+      - name: Upload build logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: C:\actions-runner\logs\AUT_Utilities\BuildLog_*.txt
+
+      - name: Upload Boot Project
+        uses: actions/upload-artifact@v4
+        with:
+          name: boot-project
+          path: C:\TwinCAT projects\AUT_Utilities\_Boot\

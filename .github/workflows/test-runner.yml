@@ -1,30 +1,22 @@
-name: TwinCAT Build
+name: TwinCAT Build and Test
 
-on:
-  push:
-    branches: [ master ]
-  workflow_dispatch:
+on: [push]
 
 jobs:
   build:
-    runs-on: [self-hosted, windows, twincat]
-
+    runs-on: self-hosted  # Questo istruisce GitHub ad usare il runner sul tuo PC
+    
     steps:
-      - name: Checkout repository
+      - name: Checkout PLC Project
         uses: actions/checkout@v4
 
-      - name: Build TwinCAT solution
+      - name: Run Automation Tool
         run: |
-          powershell -ExecutionPolicy Bypass -File "C:\actions-runner\scripts\build-twincat.ps1"
-
-      - name: Upload build logs
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-logs
-          path: C:\actions-runner\logs\AUT_Utilities\BuildLog_*.txt
-
-      - name: Upload Boot Project
-        uses: actions/upload-artifact@v4
-        with:
-          name: boot-project
-          path: C:\TwinCAT projects\AUT_Utilities\_Boot\
+          # Usa il percorso assoluto dove hai compilato il tuo tool sul PC
+          $toolPath = "C:\actions-runner\_tools\TcCIBuilder\TcCIBuilder.exe"
+          
+          # ${{ github.workspace }} punta alla cartella dove il runner ha clonato il repo TwinCAT
+          $solutionPath = "${{ github.workspace }}\AUT_Utilities.sln"
+          
+          # Esecuzione del tool
+          & $toolPath $solutionPath "Release" "TwinCAT OS (x64)"
