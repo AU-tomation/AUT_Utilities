@@ -9,22 +9,15 @@ jobs:
   build:
     runs-on: [self-hosted, windows, twincat]
     steps:
-      - name: Cleanup Visual Studio processes
-        run: |
-          # Kill any ghost devenv processes that might lock the .vs folder
-          Get-Process devenv -ErrorAction SilentlyContinue | Stop-Process -Force
-          Get-Process TcCIBuilder -ErrorAction SilentlyContinue | Stop-Process -Force
-        shell: powershell
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          clean: false # Opzionale: evita che GitHub provi a cancellare tutto se fallisce
+          # This prevents the EBUSY error by not trying to delete locked VS index files
+          clean: false 
 
       - name: Execute TcCIBuilder
-        shell: pwsh
+        shell: powershell
         run: |
-          # Define paths
           $toolPath = "C:\actions-runner\_tools\TcCIBuilder\TcCIBuilder.exe"
           $solutionPath = "${{ github.workspace }}\AUT_Utilities.sln"
           
