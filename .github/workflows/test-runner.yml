@@ -1,22 +1,50 @@
-name: TwinCAT Build and Test
+name: TwinCAT Build & Test
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: self-hosted  # Questo istruisce GitHub ad usare il runner sul tuo PC
-    
+    runs-on: [self-hosted, windows, twincat]
     steps:
-      - name: Checkout PLC Project
-        uses: actions/checkout@v4
-
-      - name: Run Automation Tool
+      - name: Cleanup Visual Studio processes
         run: |
-          # Usa il percorso assoluto dove hai compilato il tuo tool sul PC
+          # Kill any ghost devenv processes that might lock the .vs folder
+          Get-Process devenv -ErrorAction SilentlyContinue | Stop-Process -Force
+          Get-Process TcCIBuilder -ErrorAction SilentlyContinue | Stop-Process -Force
+        shell: powershell
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          clean: false # Opzionale: evita che GitHub provi a cancellare tutto se fallisce
+
+      - name: Execute TcCIBuilder
+        shell: pwsh
+        run: |
+          # Define paths
           $toolPath = "C:\actions-runner\_tools\TcCIBuilder\TcCIBuilder.exe"
-          
-          # ${{ github.workspace }} punta alla cartella dove il runner ha clonato il repo TwinCAT
           $solutionPath = "${{ github.workspace }}\AUT_Utilities.sln"
           
-          # Esecuzione del tool
-          & $toolPath $solutionPath "Release" "TwinCAT OS (x64)"
+          # Execute the C# tool with parameters
+          # Syntax: tool.exe <slnPath> <config> <platform>
+          & $toolPath "$solutionPath" "Release" "TwinCAT OS (x64)"
+
+      - name: Upload Build Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          # Since your C# tool writes to Console, GitHub Actions captures it.
+          # If your tool also saves a file, point to that path here.
+          path: ${{ github.workspace }}\*.log 
+
+      - name: Upload Boot Project
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boot-project
+          # Update this path to where TwinCAT generates the boot folder
+          path: ${{ github.workspace }}\_Boot\
