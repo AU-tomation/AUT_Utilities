@@ -42,7 +42,7 @@ TEST_FINISHED();                             ]]></ST>
     <Method Name="AppendWithFormat" Id="{3567cf6b-28d8-4a37-86f0-622336f0c29c}">
       <Declaration><![CDATA[METHOD AppendWithFormat
 VAR
-    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance!
+    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
 END_VAR
