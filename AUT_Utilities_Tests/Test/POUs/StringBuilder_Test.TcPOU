@@ -19,7 +19,7 @@ AssignDelimitedSubstring();
     <Method Name="AppendABCTo123EqualsABC123" Id="{aa6b89ed-4bdc-434e-afc7-026d1f7cb7d6}">
       <Declaration><![CDATA[METHOD AppendABCTo123EqualsABC123
 VAR
-    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance
+    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance!
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
     _ExpectedResultString : STRING(2048) := 'ABC123';
