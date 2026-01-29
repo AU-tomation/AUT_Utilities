@@ -16,6 +16,7 @@
     <Implicit_KindOfTask>{199fefb8-bfdb-4783-bcaf-ec138c295a08}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{30810c8e-932f-464f-a5f0-975aba6bd4f6}</Implicit_Jitter_Distribution>
     <LibraryReferences>{880f70be-7ffc-4c3e-a279-ff3326b1b681}</LibraryReferences>
+    <Released>false</Released>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="PlcTask.TcTTO">
