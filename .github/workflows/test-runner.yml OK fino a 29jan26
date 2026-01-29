@@ -12,6 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          # This prevents the EBUSY error by not trying to delete locked VS index files
           clean: false 
 
       - name: Execute TcCIBuilder
@@ -20,29 +21,23 @@ jobs:
           $toolPath = "C:\actions-runner\_tools\TcCIBuilder\TcCIBuilder.exe"
           $solutionPath = "${{ github.workspace }}\AUT_Utilities.sln"
           
-          # Usiamo Tee-Object per sdoppiare l'output: lo vedi nel log di GitHub 
-          # e viene salvato nel file build.log richiesto per l'artifact
-          & $toolPath "$solutionPath" "Release" "TwinCAT OS (x64)" | Tee-Object -FilePath "build.log"
+          # Execute the C# tool with parameters
+          # Syntax: tool.exe <slnPath> <config> <platform>
+          & $toolPath "$solutionPath" "Release" "TwinCAT OS (x64)"
 
       - name: Upload Build Logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: build-logs
-          path: build.log 
-
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tcunit-results
-          # Questo è il file che il tuo C# copia alla fine
-          path: ${{ github.workspace }}\TcUnit_Results.xml
+          # Since your C# tool writes to Console, GitHub Actions captures it.
+          # If your tool also saves a file, point to that path here.
+          path: ${{ github.workspace }}\*.log 
 
       - name: Upload Boot Project
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: boot-project
-          # Percorso reale dei file di boot per il runtime UMRT Default
-          path: C:\ProgramData\Beckhoff\TwinCAT\3.1\Runtimes\UmRT_Default\3.1\Boot\
+          # Update this path to where TwinCAT generates the boot folder
+          path: ${{ github.workspace }}\_Boot\
