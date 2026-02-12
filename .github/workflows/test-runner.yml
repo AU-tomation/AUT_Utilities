@@ -39,10 +39,18 @@ jobs:
           # Questo è il file che il tuo C# copia alla fine
           path: ${{ github.workspace }}\TcUnit_Results.xml
 
-      - name: Upload Boot Project
+       - name: Publish Test Report (UI)
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          # Cerca il file generato e crea la tabella grafica su GitHub
+          report_paths: '**/TcUnit_Results.xml'
+          check_name: 'TcUnit Execution Report'
+
+     - name: Upload Boot Project
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: boot-project
           # Percorso reale dei file di boot per il runtime UMRT Default
-          path: C:\ProgramData\Beckhoff\TwinCAT\3.1\Runtimes\UmRT_Default\3.1\Boot\
+          path: C:\ProgramData\Beckhoff\TwinCAT\3.1\Runtimes\UmRT_Default\3.1\Boot\**
