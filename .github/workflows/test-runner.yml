@@ -45,6 +45,8 @@ jobs:
           report_paths: '**/TcUnit_Results.xml'
           check_name: 'TcUnit Execution Report'
           include_passed: true
+          annotate_only: false
+          detailed_summary: true
 
       - name: Upload Boot Project
         if: success()
