@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tcunit-results
-          # Questo è il file che il tuo C# copia alla fine
+          # Questo è il file che il tuo C# copia alla fine !
           path: ${{ github.workspace }}\TcUnit_Results.xml
 
        - name: Publish Test Report (UI)
