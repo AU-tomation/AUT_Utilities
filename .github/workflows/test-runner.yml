@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: [self-hosted, windows, twincat]
+    permissions:
+      contents: read
+      checks: write  # Necessario per il report UI
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,9 +22,6 @@ jobs:
         run: |
           $toolPath = "C:\actions-runner\_tools\TcCIBuilder\TcCIBuilder.exe"
           $solutionPath = "${{ github.workspace }}\AUT_Utilities.sln"
-          
-          # Usiamo Tee-Object per sdoppiare l'output: lo vedi nel log di GitHub 
-          # e viene salvato nel file build.log richiesto per l'artifact
           & $toolPath "$solutionPath" "Release" "TwinCAT OS (x64)" | Tee-Object -FilePath "build.log"
 
       - name: Upload Build Logs
@@ -31,26 +31,23 @@ jobs:
           name: build-logs
           path: build.log 
 
-      - name: Upload Test Results
+      - name: Upload Test Results XML
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: tcunit-results
-          # Questo è il file che il tuo C# copia alla fine !
           path: ${{ github.workspace }}\TcUnit_Results.xml
 
-       - name: Publish Test Report (UI)
+      - name: Publish Test Report UI
         uses: mikepenz/action-junit-report@v4
         if: always()
         with:
-          # Cerca il file generato e crea la tabella grafica su GitHub
           report_paths: '**/TcUnit_Results.xml'
           check_name: 'TcUnit Execution Report'
 
-     - name: Upload Boot Project
+      - name: Upload Boot Project
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: boot-project
-          # Percorso reale dei file di boot per il runtime UMRT Default
           path: C:\ProgramData\Beckhoff\TwinCAT\3.1\Runtimes\UmRT_Default\3.1\Boot\**
