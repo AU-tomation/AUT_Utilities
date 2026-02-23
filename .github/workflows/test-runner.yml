@@ -9,13 +9,14 @@ jobs:
   build:
     runs-on: [self-hosted, windows, twincat]
     permissions:
-      contents: read
-      checks: write  # Necessario per il report UI
+      contents: write   # necessario per push su gh-pages
+      checks: write     # necessario per il report UI
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          clean: false 
+          clean: false
 
       - name: Execute TcCIBuilder
         shell: powershell
@@ -23,13 +24,17 @@ jobs:
           $toolPath = "C:\actions-runner\_tools\TcCIBuilder\TcCIBuilder.exe"
           $solutionPath = "${{ github.workspace }}\AUT_Utilities.sln"
           & $toolPath "$solutionPath" "Release" "TwinCAT OS (x64)" | Tee-Object -FilePath "build.log"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "TcCIBuilder failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+          }
 
-      - name: Upload Build Logs
+      - name: Upload Build Log
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: build-logs
-          path: build.log 
+          path: build.log
 
       - name: Upload Test Results XML
         if: always()
@@ -39,8 +44,8 @@ jobs:
           path: ${{ github.workspace }}\TcUnit_Results.xml
 
       - name: Publish Test Report UI
-        uses: mikepenz/action-junit-report@v4
         if: always()
+        uses: mikepenz/action-junit-report@v4
         with:
           report_paths: '**/TcUnit_Results.xml'
           check_name: 'TcUnit Execution Report'
@@ -54,3 +59,42 @@ jobs:
         with:
           name: boot-project
           path: C:\ProgramData\Beckhoff\TwinCAT\3.1\Runtimes\UmRT_Default\3.1\Boot\**
+
+      - name: Deploy documentation to gh-pages
+        if: success()
+        shell: powershell
+        run: |
+          $docsSource = "${{ github.workspace }}\docs"
+
+          # Configura git
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Salva il commit SHA corrente per il messaggio di commit
+          $sha = "${{ github.sha }}".Substring(0, 7)
+
+          # Fetch del branch gh-pages (o crealo se non esiste)
+          git fetch origin gh-pages 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            git checkout gh-pages
+          } else {
+            git checkout --orphan gh-pages
+            git rm -rf . 2>$null
+          }
+
+          # Copia i file docs/ nella root di gh-pages
+          Copy-Item -Path "$docsSource\*" -Destination "." -Recurse -Force
+
+          # Commit e push solo se ci sono modifiche
+          git add -A
+          $status = git status --porcelain
+          if ($status) {
+            git commit -m "docs: update documentation from $sha"
+            git push origin gh-pages
+            Write-Host "Documentation deployed to gh-pages."
+          } else {
+            Write-Host "No documentation changes to deploy."
+          }
+
+          # Torna su master
+          git checkout master

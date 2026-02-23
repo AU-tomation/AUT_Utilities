@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="StringBuilder_Test" Id="{3fedb51e-9356-4535-8d2f-4a045221111f}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK StringBuilder_Test EXTENDS TcUnit.FB_TestSuite
+    <Declaration><![CDATA[{attribute 'no-analysis'}       // Disable SA for entire POU
+FUNCTION_BLOCK StringBuilder_Test EXTENDS TcUnit.FB_TestSuite
 
 ]]></Declaration>
     <Implementation>
@@ -19,7 +20,7 @@ AssignDelimitedSubstring();
     <Method Name="AppendABCTo123EqualsABC123" Id="{aa6b89ed-4bdc-434e-afc7-026d1f7cb7d6}">
       <Declaration><![CDATA[METHOD AppendABCTo123EqualsABC123
 VAR
-    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance !
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
     _ExpectedResultString : STRING(2048) := 'ABC123';
@@ -42,7 +43,7 @@ TEST_FINISHED();                             ]]></ST>
     <Method Name="AppendWithFormat" Id="{3567cf6b-28d8-4a37-86f0-622336f0c29c}">
       <Declaration><![CDATA[METHOD AppendWithFormat
 VAR
-    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
 END_VAR
@@ -77,7 +78,7 @@ TEST_FINISHED();                             ]]></ST>
     <Method Name="AssignDelimitedSubstring" Id="{762e7bde-9f80-4dd4-b147-b40c8c38ef3d}">
       <Declaration><![CDATA[METHOD AssignDelimitedSubstring
 VAR
-    {analysis -167}      // Disable SA0167: Temporary FunctionBlock instance
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
     _StringToAssignTo : STRING(2048);
@@ -162,6 +163,7 @@ TEST_FINISHED();                             ]]></ST>
     <Method Name="InsertXYZAt3IntoABC123EqualsABCXYZ123" Id="{a190dc2d-7b2f-41c9-ae08-0c370db28329}">
       <Declaration><![CDATA[METHOD InsertXYZAt3IntoABC123EqualsABCXYZ123
 VAR
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
     _ExpectedResultString : STRING(2048) := 'ABCXYZ123';
@@ -184,6 +186,7 @@ TEST_FINISHED();                             ]]></ST>
     <Method Name="LeftOfABC123With3EqualsABC" Id="{a59b1ba5-0175-4c78-a58a-4a8939734a4c}">
       <Declaration><![CDATA[METHOD LeftOfABC123With3EqualsABC
 VAR
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
     _ExpectedResultString : STRING(2048) := 'ABC';
@@ -206,6 +209,7 @@ TEST_FINISHED();                             ]]></ST>
     <Method Name="MultipleOperations" Id="{7e99dbbd-f2f7-4ca5-9a93-e606634ec362}">
       <Declaration><![CDATA[METHOD MultipleOperations
 VAR
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
 END_VAR
@@ -259,6 +263,7 @@ TEST_FINISHED();  ]]></ST>
     <Method Name="RemoveDelimitedSubstring" Id="{c1f342dd-8711-4a15-9753-a84e0da98f72}">
       <Declaration><![CDATA[METHOD RemoveDelimitedSubstring
 VAR
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
 END_VAR
@@ -342,6 +347,7 @@ TEST_FINISHED();                             ]]></ST>
     <Method Name="RightOfABC123With3Equals123" Id="{e2fd2f63-e778-4065-baf4-c1e4ad69b2aa}">
       <Declaration><![CDATA[METHOD RightOfABC123With3Equals123
 VAR
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
     _ExpectedResultString : STRING(2048) := '123';
@@ -364,6 +370,7 @@ TEST_FINISHED();                             ]]></ST>
     <Method Name="ToStringWithoutAppendEqualsEmptyString" Id="{2abc977b-b36c-4a1c-8663-c42e2a39637e}">
       <Declaration><![CDATA[METHOD ToStringWithoutAppendEqualsEmptyString
 VAR
+    {attribute 'analysis' := '-167'}      // Disable SA0167: Temporary FunctionBlock instance
     _StringBuilder : StringBuilder;
     _ResultString : STRING(2048) := '';
     _ExpectedResultString : STRING(2048) := '';

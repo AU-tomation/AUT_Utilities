@@ -7,6 +7,11 @@ Project("{B1E792BE-AA5F-4E3C-8C82-674BF9C0715B}") = "AUT_Utilities_PRJ", "AUT_Ut
 EndProject
 Project("{B1E792BE-AA5F-4E3C-8C82-674BF9C0715B}") = "AUT_Utilities_Tests_PRJ", "AUT_Utilities_Tests\AUT_Utilities_Tests_PRJ.tsproj", "{64DEB2FD-EAF7-C55D-6AB2-1C95F2C31B9D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|TwinCAT OS (ARMV7-A) = Debug|TwinCAT OS (ARMV7-A)
