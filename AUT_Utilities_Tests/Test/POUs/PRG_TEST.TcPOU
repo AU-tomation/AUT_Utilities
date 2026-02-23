@@ -4,7 +4,7 @@
     <Declaration><![CDATA[{attribute 'no-analysis'}       // Disable SA for entire POU
 PROGRAM PRG_TEST
 VAR
-    {attribute 'analysis' := '-33'}      // Disable SA0033: Unused variable.
+    {attribute 'analysis' := '-33'}      // Disable SA0033: Unused variable
     _StringBuilder_Test : StringBuilder_Test;
 END_VAR
 ]]></Declaration>
