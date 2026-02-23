@@ -92,6 +92,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          git config core.autocrlf false
           git add -A
           $status = git status --porcelain
           if ($status) {
