@@ -1,0 +1,283 @@
+{
+  "name": "AUT_Utilities",
+  "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities.HTM",
+  "isRoot": true,
+  "children": [
+    {
+      "name": "GVLs",
+      "path": null,
+      "children": [
+        {
+          "name": "GVL_Param_AUT_Utilities",
+          "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/GVLs/GVL_Param_AUT_Utilities.HTM",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "POUs",
+      "path": null,
+      "children": [
+        {
+          "name": "StringBuilder",
+          "path": null,
+          "children": [
+            {
+              "name": "Classes",
+              "path": null,
+              "children": [
+                {
+                  "name": "StringBuilder",
+                  "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder.HTM",
+                  "children": [
+                    {
+                      "name": "Append",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/Append.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "AppendWithFormat",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/AppendWithFormat.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "AssignDelimitedSubstringTo",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/AssignDelimitedSubstringTo.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "AssignTo",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/AssignTo.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "InsertAt",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/InsertAt.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Left",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/Left.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Mid",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/Mid.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "PadLeft",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/PadLeft.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "PadRight",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/PadRight.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "RemoveAt",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/RemoveAt.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "RemoveDelimitedSubstring",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/RemoveDelimitedSubstring.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "ReplaceAt",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/ReplaceAt.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Reset",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/Reset.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Right",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/Right.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "ToString",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/ToString.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "ToWString",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Classes/StringBuilder/ToWString.HTM",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Interfaces",
+              "path": null,
+              "children": [
+                {
+                  "name": "ILimitedStringBuilder",
+                  "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/ILimitedStringBuilder.HTM",
+                  "children": [
+                    {
+                      "name": "Append",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/ILimitedStringBuilder/Append.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "AppendWithFormat",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/ILimitedStringBuilder/AppendWithFormat.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Reset",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/ILimitedStringBuilder/Reset.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "ToString",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/ILimitedStringBuilder/ToString.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "ToWString",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/ILimitedStringBuilder/ToWString.HTM",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "IStringBuilder",
+                  "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder.HTM",
+                  "children": [
+                    {
+                      "name": "Append",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/Append.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "AppendWithFormat",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/AppendWithFormat.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "AssignDelimitedSubstringTo",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/AssignDelimitedSubstringTo.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "AssignTo",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/AssignTo.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "InsertAt",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/InsertAt.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Left",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/Left.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Mid",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/Mid.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "PadLeft",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/PadLeft.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "PadRight",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/PadRight.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "RemoveAt",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/RemoveAt.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "RemoveDelimitedSubstring",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/RemoveDelimitedSubstring.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "ReplaceAt",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/ReplaceAt.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Reset",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/Reset.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "Right",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/Right.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "ToString",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/ToString.HTM",
+                      "children": []
+                    },
+                    {
+                      "name": "ToWString",
+                      "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/POUs/StringBuilder/Interfaces/IStringBuilder/ToWString.HTM",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Project",
+      "path": null,
+      "children": [
+        {
+          "name": "Information",
+          "path": null,
+          "children": [
+            {
+              "name": "F_GetCompany",
+              "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/Project/Information/F_GetCompany.HTM",
+              "children": []
+            },
+            {
+              "name": "F_GetTitle",
+              "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/Project/Information/F_GetTitle.HTM",
+              "children": []
+            },
+            {
+              "name": "F_GetVersion",
+              "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/Project/Information/F_GetVersion.HTM",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Version",
+      "path": null,
+      "children": [
+        {
+          "name": "Global_Version",
+          "path": "AUT_Utilities_PRJ/PLC/AUT_Utilities/Version/Global_Version.HTM",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
