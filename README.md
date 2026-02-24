@@ -1,4 +1,9 @@
-# AUT_Utilities
+﻿# AUT_Utilities
+
+[![Build & Test](https://github.com/AU-tomation/AUT_Utilities/actions/workflows/test-runner.yml/badge.svg)](https://github.com/AU-tomation/AUT_Utilities/actions/workflows/test-runner.yml)
+[![CodeQL](https://github.com/AU-tomation/AUT_Utilities/security/code-scanning/badge.svg)](https://github.com/AU-tomation/AUT_Utilities/security/code-scanning)
+📖 [Documentation](https://au-tomation.github.io/AUT_Utilities/)
+
 
 AU-tomation Toolkit 'Utilities' library
 
