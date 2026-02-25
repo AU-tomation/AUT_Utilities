@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="StringBuilder" Id="{8b6cce3d-fec6-455c-849a-88b106706848}" SpecialFunc="None">
     <Declaration><![CDATA[(*! <Summary>
@@ -16,9 +16,10 @@ END_VAR]]></Declaration>
     </Implementation>
     <Method Name="Append" Id="{97928194-740a-46c9-9479-85912eaee214}">
       <Declaration><![CDATA[//! @Description Append a string to the string under construction
+//! @param Text The Text to append to current build string
 METHOD PUBLIC Append : IStringBuilder // Append text to the current built string.
 VAR_INPUT
-	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); //Text to append to current build string
+	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); //! Text to append to current build string
 END_VAR
 VAR
     _BoolRes : BOOL;
