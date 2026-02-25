@@ -1,29 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <Itf Name="ILimitedStringBuilder" Id="{3b3cc063-dd61-45f7-aa02-e6f092d65ebb}">
-    <Declaration><![CDATA[INTERFACE ILimitedStringBuilder
+    <Declaration><![CDATA[(*! <Summary>
+Minimal fluent interface: construction and output only (Append, Reset, ToString, ToWString).
+</Summary> *)
+INTERFACE ILimitedStringBuilder
 ]]></Declaration>
     <Method Name="Append" Id="{cb85310e-4987-4cc7-8a05-9832a0be426b}">
-      <Declaration><![CDATA[METHOD  Append : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD Append : IStringBuilder // Returns the full builder interface for fluent chaining.
 VAR_INPUT
-	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); //Text to append to current build string
+	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Text to append to the current built string
 END_VAR]]></Declaration>
     </Method>
     <Method Name="AppendWithFormat" Id="{dabae837-2235-48b2-a5a9-95583277cf7a}">
-      <Declaration><![CDATA[METHOD  AppendWithFormat : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD AppendWithFormat : IStringBuilder // Returns the full builder interface for fluent chaining.
 VAR_INPUT
-	Value : ANY;    //T_Arg; // Value to format
-	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Format to apply 
+	Value : ANY;    // Value to format (any primitive type)
+	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Printf-style format string (e.g. '%05d', '%.2f', '%X')
 END_VAR]]></Declaration>
     </Method>
     <Method Name="Reset" Id="{ebe76031-5bda-45af-a5b1-6f04a5768308}">
-      <Declaration><![CDATA[METHOD Reset : ILimitedStringBuilder //Reset current build string to an empty string.]]></Declaration>
+      <Declaration><![CDATA[METHOD Reset : ILimitedStringBuilder // Returns the limited builder interface for fluent chaining.]]></Declaration>
     </Method>
     <Method Name="ToString" Id="{5e66f779-8a90-4f31-b710-213cc3abfd38}">
-      <Declaration><![CDATA[METHOD ToString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength)    //Returns current build string.]]></Declaration>
+      <Declaration><![CDATA[METHOD ToString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) // The current built string.]]></Declaration>
     </Method>
     <Method Name="ToWString" Id="{9fa4eae6-5cd2-4dcf-a3e4-15e1a138eff3}">
-      <Declaration><![CDATA[METHOD ToWString : WSTRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) //Returns current build string.]]></Declaration>
+      <Declaration><![CDATA[METHOD ToWString : WSTRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) // The current built string as WSTRING.]]></Declaration>
     </Method>
   </Itf>
 </TcPlcObject>

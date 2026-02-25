@@ -1,106 +1,109 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <Itf Name="IStringBuilder" Id="{a96f9cef-4f33-4ae4-9622-b562253d04a0}">
-    <Declaration><![CDATA[INTERFACE IStringBuilder ]]></Declaration>
+    <Declaration><![CDATA[(*! <Summary>
+Fluent interface for full string building and manipulation.
+</Summary> *)
+INTERFACE IStringBuilder ]]></Declaration>
     <Method Name="Append" Id="{5802eef8-4768-447d-ac88-e4a7e9a4f4d4}">
-      <Declaration><![CDATA[METHOD  Append : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD Append : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); //Text to append to current build string
+	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Text to append to the current built string
 END_VAR]]></Declaration>
     </Method>
     <Method Name="AppendWithFormat" Id="{df05e3dc-baf8-4636-8c44-47459edd0d1f}">
-      <Declaration><![CDATA[METHOD  AppendWithFormat : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD AppendWithFormat : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Value : ANY;    //T_Arg; // Value to format
-	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Format to apply 
+	Value : ANY;    // Value to format (any primitive type)
+	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Printf-style format string (e.g. '%05d', '%.2f', '%X')
 END_VAR]]></Declaration>
     </Method>
     <Method Name="AssignDelimitedSubstringTo" Id="{f8790f8f-2557-4c2d-a39d-d6daaf698cf6}">
-      <Declaration><![CDATA[METHOD AssignDelimitedSubstringTo : IStringBuilder
+      <Declaration><![CDATA[METHOD AssignDelimitedSubstringTo : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    Delimiter : STRING(1);
-    SubstringIndex : UDINT;
-	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
-    DestinationSize : UDINT;
+    Delimiter : STRING(1); // Single-character delimiter
+    SubstringIndex : UDINT; // 1-based index of the token to extract (0 returns empty string)
+	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Pointer to the destination string
+    DestinationSize : UDINT; // Size in bytes of the destination string
 END_VAR]]></Declaration>
     </Method>
     <Method Name="AssignTo" Id="{c9769b97-efb5-4d30-8683-906edf176a90}">
-      <Declaration><![CDATA[METHOD AssignTo : IStringBuilder
+      <Declaration><![CDATA[METHOD AssignTo : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
-    DestinationSize : UDINT;
+	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Pointer to the destination string
+    DestinationSize : UDINT; // Size in bytes of the destination string
 END_VAR]]></Declaration>
     </Method>
     <Method Name="InsertAt" Id="{240a8eb2-830b-47ca-9391-a327b097efb3}">
-      <Declaration><![CDATA[METHOD InsertAt : IStringBuilder
+      <Declaration><![CDATA[METHOD InsertAt : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
-	Position : UDINT;
+	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Text to insert
+	Position : UDINT; // 1-based position at which to insert the text
 END_VAR]]></Declaration>
     </Method>
     <Method Name="Left" Id="{6d0c8a7a-145c-4460-9161-51ed4c634dd3}">
-      <Declaration><![CDATA[METHOD  Left : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD Left : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Length : UDINT;
+	Length : UDINT; // Number of characters to keep from the left
 END_VAR]]></Declaration>
     </Method>
     <Method Name="Mid" Id="{dc588605-d43e-4708-9622-8e4396e24184}">
-      <Declaration><![CDATA[METHOD  Mid : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD Mid : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Position : UDINT;
-	Length : UDINT;
+	Position : UDINT; // 1-based starting position
+	Length : UDINT; // Number of characters to keep
 END_VAR]]></Declaration>
     </Method>
     <Method Name="PadLeft" Id="{1d9fd8ae-5b0d-4653-9f60-32a24a7b6e77}">
-      <Declaration><![CDATA[METHOD  PadLeft : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD PadLeft : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    PaddingChar : STRING(1);
-	TotalLength : UDINT;
+    PaddingChar : STRING(1); // Single character used for padding
+	TotalLength : UDINT; // Desired total length after padding
 END_VAR]]></Declaration>
     </Method>
     <Method Name="PadRight" Id="{e629a050-5959-4310-a785-f6d38597d96e}">
-      <Declaration><![CDATA[METHOD  PadRight : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD PadRight : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    PaddingChar : STRING(1);
-	TotalLength : UDINT;
+    PaddingChar : STRING(1); // Single character used for padding
+	TotalLength : UDINT; // Desired total length after padding
 END_VAR]]></Declaration>
     </Method>
     <Method Name="RemoveAt" Id="{ff04897d-a67c-4131-a8d9-c2aed5c52ac3}">
-      <Declaration><![CDATA[METHOD RemoveAt : IStringBuilder
+      <Declaration><![CDATA[METHOD RemoveAt : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Position : UDINT;
-    Length : UDINT;
+	Position : UDINT; // 1-based position from which to start removing
+    Length : UDINT; // Number of characters to remove
 END_VAR]]></Declaration>
     </Method>
     <Method Name="RemoveDelimitedSubstring" Id="{a4e60b66-0e3c-4e6e-a56f-5cfb7268a908}">
-      <Declaration><![CDATA[METHOD RemoveDelimitedSubstring : IStringBuilder
+      <Declaration><![CDATA[METHOD RemoveDelimitedSubstring : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    Delimiter : STRING(1);
-    SubstringIndex : UDINT;
+    Delimiter : STRING(1); // Single-character delimiter
+    SubstringIndex : UDINT; // 1-based index of the token to remove
 END_VAR]]></Declaration>
     </Method>
     <Method Name="ReplaceAt" Id="{043e6c07-bfa2-4e4b-8723-2fd1257be72d}">
-      <Declaration><![CDATA[METHOD ReplaceAt : IStringBuilder
+      <Declaration><![CDATA[METHOD ReplaceAt : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
-	Position : UDINT;
-    Length : UDINT;
+    Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Replacement text
+	Position : UDINT; // 1-based position of the first character to replace
+    Length : UDINT; // Number of characters to replace
 END_VAR]]></Declaration>
     </Method>
     <Method Name="Reset" Id="{6597caa0-da9c-4a84-b85b-7d02773d9b7d}">
-      <Declaration><![CDATA[METHOD Reset : ILimitedStringBuilder //Reset current build string to an empty string.]]></Declaration>
+      <Declaration><![CDATA[METHOD Reset : ILimitedStringBuilder // Returns the limited builder interface for fluent chaining.]]></Declaration>
     </Method>
     <Method Name="Right" Id="{8ab9a4b3-8843-44ac-9824-dcff801059b3}">
-      <Declaration><![CDATA[METHOD  Right : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[METHOD Right : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Length : UDINT;
+	Length : UDINT; // Number of characters to keep from the right
 END_VAR]]></Declaration>
     </Method>
     <Method Name="ToString" Id="{acbc2342-d0e7-452e-9b07-7dea4bd95d81}">
-      <Declaration><![CDATA[METHOD ToString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) //Returns current build string.]]></Declaration>
+      <Declaration><![CDATA[METHOD ToString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) // The current built string.]]></Declaration>
     </Method>
     <Method Name="ToWString" Id="{65b50ad9-a317-4856-a5b6-0ed46815bd97}">
-      <Declaration><![CDATA[METHOD ToWString : WSTRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) //Returns current build string.]]></Declaration>
+      <Declaration><![CDATA[METHOD ToWString : WSTRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) // The current built string as WSTRING.]]></Declaration>
     </Method>
   </Itf>
 </TcPlcObject>

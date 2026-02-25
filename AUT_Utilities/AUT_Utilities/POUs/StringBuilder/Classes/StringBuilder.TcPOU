@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="StringBuilder" Id="{8b6cce3d-fec6-455c-849a-88b106706848}" SpecialFunc="None">
     <Declaration><![CDATA[(*! <Summary>
@@ -30,10 +30,13 @@ Append := THIS^;    // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="AppendWithFormat" Id="{60116ab5-037b-4083-8602-0f8aed205f47}">
-      <Declaration><![CDATA[METHOD  AppendWithFormat : IStringBuilder // Append text to t current build string.
+      <Declaration><![CDATA[(*! <Summary>
+Appends a formatted value using a printf-style format string.
+</Summary> *)
+METHOD AppendWithFormat : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Value : ANY;   // T_Arg; // Value to format
-	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Format to apply 
+	Value : ANY;   // Value to format (any primitive type)
+	Format : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Printf-style format string (e.g. '%05d', '%.2f', '%X')
 END_VAR
 VAR
     _FormatString2 : Tc2_Utilities.FB_FormatString2;
@@ -69,7 +72,7 @@ END_CASE
 IF NOT _BoolError THEN
     _FormatString2(pFormatString := ADR(Format),
                    arg1 := _arg1,
-                   pDstString := ADR(_FormattedText), 
+                   pDstString := ADR(_FormattedText),
                    nDstSize := SIZEOF(_FormattedText),
                    bError => _BoolError);
 END_IF
@@ -81,12 +84,15 @@ AppendWithFormat := THIS^;    // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="AssignDelimitedSubstringTo" Id="{698e6e2e-63f1-4fb0-889a-0788275ac183}">
-      <Declaration><![CDATA[METHOD AssignDelimitedSubstringTo : IStringBuilder
+      <Declaration><![CDATA[(*! <Summary>
+Extracts the Nth delimited token and copies it to Destination.
+</Summary> *)
+METHOD AssignDelimitedSubstringTo : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    Delimiter : STRING(1);
-    SubstringIndex : UDINT;
-	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
-    DestinationSize : UDINT;
+    Delimiter : STRING(1); // Single-character delimiter
+    SubstringIndex : UDINT; // 1-based index of the token to extract (0 returns empty string)
+	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Pointer to the destination string
+    DestinationSize : UDINT; // Size in bytes of the destination string
 END_VAR
 VAR
     _CurrentPosition : UDINT := 0;
@@ -102,7 +108,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[// ATTENTION: pointer arithmetics is used to move inside string
 IF SubstringIndex < 1 THEN
     // Assign empty string
-    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);   
+    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);
     AssignDelimitedSubstringTo := THIS^;      // Fluent interface
     RETURN;
 END_IF
@@ -123,28 +129,31 @@ END_REPEAT
 
 IF _CurrentDelimiterIndex = 0 THEN
     // No delimiter was found: assign entire building string
-    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_BuildingString), DestinationSize);       
+    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_BuildingString), DestinationSize);
 ELSIF SubstringIndex > (_CurrentDelimiterIndex + 1) THEN
     // Requested substring not found: assign an empty string
-    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);       
+    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);
 ELSE
     // Delimiters were found: assign requested substring
     // NOTE: STRNCPY inserts a null terminator at the position of destination size (for copying n chars: destination size must be n + 1)
     IF SubstringIndex = 1 THEN
-        _BoolRes := Tc2_Utilities.STRNCPY(ADR(_Substring), ADR(_BuildingString), _TrailingDelimiterPosition);   
+        _BoolRes := Tc2_Utilities.STRNCPY(ADR(_Substring), ADR(_BuildingString), _TrailingDelimiterPosition);
     ELSE
         _BoolRes := Tc2_Utilities.STRNCPY(ADR(_Substring), ADR(_BuildingString) + _LeadingDelimiterPosition, _TrailingDelimiterPosition - _LeadingDelimiterPosition);
     END_IF
-    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);   
+    _BoolRes := Tc2_Utilities.STRNCPY(Destination, ADR(_Substring), DestinationSize);
 END_IF
 AssignDelimitedSubstringTo := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="AssignTo" Id="{0a14c808-fbd9-4bbc-a2f1-b424d90eeaab}">
-      <Declaration><![CDATA[METHOD AssignTo : IStringBuilder
+      <Declaration><![CDATA[(*! <Summary>
+Copies the current built string into Destination.
+</Summary> *)
+METHOD AssignTo : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
-    DestinationSize : UDINT;
+	Destination : POINTER TO STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Pointer to the destination string
+    DestinationSize : UDINT; // Size in bytes of the destination string
 END_VAR
 VAR
     _BoolRes : BOOL;
@@ -155,10 +164,13 @@ AssignTo := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="InsertAt" Id="{e92c66b5-b697-4308-a175-1131aa42cb77}">
-      <Declaration><![CDATA[METHOD PUBLIC InsertAt : IStringBuilder
+      <Declaration><![CDATA[(*! <Summary>
+Inserts Text at the given 1-based Position.
+</Summary> *)
+METHOD PUBLIC InsertAt : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
-	Position : UDINT;
+	Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Text to insert
+	Position : UDINT; // 1-based position at which to insert the text
 END_VAR
 VAR
     _BoolRes : BOOL;
@@ -169,9 +181,12 @@ InsertAt := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="Left" Id="{8830457f-8ba5-4b91-b336-a8c2e5712763}">
-      <Declaration><![CDATA[METHOD  Left : IStringBuilder // Append text to the current built string.
+      <Declaration><![CDATA[(*! <Summary>
+Keeps only the first Length characters of the built string.
+</Summary> *)
+METHOD Left : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Length : UDINT;
+	Length : UDINT; // Number of characters to keep from the left
 END_VAR
 VAR
     _BoolRes : BOOL;
@@ -182,10 +197,13 @@ Left := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="Mid" Id="{a790806c-0997-4e8a-953a-514ec7fcd716}">
-      <Declaration><![CDATA[METHOD  Mid : IStringBuilder // Append text to the current built string.
+      <Declaration><![CDATA[(*! <Summary>
+Keeps Length characters starting at 1-based Position.
+</Summary> *)
+METHOD Mid : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Position : UDINT;
-	Length : UDINT;
+	Position : UDINT; // 1-based starting position
+	Length : UDINT; // Number of characters to keep
 END_VAR
 VAR
     _BoolRes : BOOL;
@@ -197,10 +215,13 @@ Mid := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="PadLeft" Id="{e4c48602-110f-44b4-a98f-ab2f3008da18}">
-      <Declaration><![CDATA[METHOD  PadLeft : IStringBuilder // Insert PaddingChar at the beginning of the current built string up to TotalLength
+      <Declaration><![CDATA[(*! <Summary>
+Pads the built string on the left with PaddingChar up to TotalLength.
+</Summary> *)
+METHOD PadLeft : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    PaddingChar : STRING(1);
-	TotalLength : UDINT;
+    PaddingChar : STRING(1); // Single character used for padding
+	TotalLength : UDINT; // Desired total length after padding
 END_VAR
 VAR
     _Index : UDINT;
@@ -211,16 +232,19 @@ END_VAR]]></Declaration>
         <ST><![CDATA[IF Tc2_Utilities.LEN2(ADR(_BuildingString)) < TotalLength THEN
     FOR _Index := 1 TO (TotalLength - Tc2_Utilities.LEN2(ADR(_BuildingString))) DO
         InsertAt(PaddingChar, 1);
-    END_FOR   
+    END_FOR
 END_IF
 PadLeft := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="PadRight" Id="{f4859cef-2f49-40f4-b510-3cbecc19c1c4}">
-      <Declaration><![CDATA[METHOD  PadRight : IStringBuilder // Insert PaddingChar at the end of the current built string up to TotalLength
+      <Declaration><![CDATA[(*! <Summary>
+Pads the built string on the right with PaddingChar up to TotalLength.
+</Summary> *)
+METHOD PadRight : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    PaddingChar : STRING(1);
-	TotalLength : UDINT;
+    PaddingChar : STRING(1); // Single character used for padding
+	TotalLength : UDINT; // Desired total length after padding
 END_VAR
 VAR
     _Index : UDINT;
@@ -231,16 +255,19 @@ END_VAR]]></Declaration>
         <ST><![CDATA[IF Tc2_Utilities.LEN2(ADR(_BuildingString)) < TotalLength THEN
     FOR _Index := 1 TO (TotalLength - Tc2_Utilities.LEN2(ADR(_BuildingString))) DO
         Append(PaddingChar);
-    END_FOR   
+    END_FOR
 END_IF
 PadRight := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="RemoveAt" Id="{6c81872c-8f56-43aa-a82b-ba2a779ff3d2}">
-      <Declaration><![CDATA[METHOD RemoveAt : IStringBuilder
+      <Declaration><![CDATA[(*! <Summary>
+Removes Length characters starting at 1-based Position.
+</Summary> *)
+METHOD RemoveAt : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Position : UDINT;
-    Length : UDINT;
+	Position : UDINT; // 1-based position from which to start removing
+    Length : UDINT; // Number of characters to remove
 END_VAR
 VAR
     _BoolRes : BOOL;
@@ -251,10 +278,13 @@ RemoveAt := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="RemoveDelimitedSubstring" Id="{0143fc6b-15b0-4de9-ba76-313e88c96427}">
-      <Declaration><![CDATA[METHOD RemoveDelimitedSubstring : IStringBuilder
+      <Declaration><![CDATA[(*! <Summary>
+Removes the Nth delimited token (and its trailing delimiter) from the built string.
+</Summary> *)
+METHOD RemoveDelimitedSubstring : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    Delimiter : STRING(1);
-    SubstringIndex : UDINT;
+    Delimiter : STRING(1); // Single-character delimiter
+    SubstringIndex : UDINT; // 1-based index of the token to remove
 END_VAR
 VAR
     _CurrentPosition : UDINT := 0;
@@ -306,11 +336,14 @@ RemoveDelimitedSubstring := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="ReplaceAt" Id="{81e47fe5-7bcc-4c2a-8791-af280ee56b98}">
-      <Declaration><![CDATA[METHOD ReplaceAt : IStringBuilder
+      <Declaration><![CDATA[(*! <Summary>
+Replaces Length characters at 1-based Position with Text.
+</Summary> *)
+METHOD ReplaceAt : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-    Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength);
-	Position : UDINT;
-    Length : UDINT;
+    Text : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength); // Replacement text
+	Position : UDINT; // 1-based position of the first character to replace
+    Length : UDINT; // Number of characters to replace
 END_VAR
 VAR
     _BoolRes : BOOL;
@@ -321,16 +354,22 @@ ReplaceAt := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reset" Id="{3b4cc271-03d3-421f-b2fe-50bbd95d6cdb}">
-      <Declaration><![CDATA[METHOD PUBLIC Reset : ILimitedStringBuilder //Reset current built string to an empty string.]]></Declaration>
+      <Declaration><![CDATA[(*! <Summary>
+Clears the built string to empty.
+</Summary> *)
+METHOD PUBLIC Reset : ILimitedStringBuilder // Returns the limited builder interface for fluent chaining.]]></Declaration>
       <Implementation>
         <ST><![CDATA[_BuildingString := '';
 Reset := THIS^;     // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="Right" Id="{5c9eebce-16b4-4549-873c-40e74a589919}">
-      <Declaration><![CDATA[METHOD  Right : IStringBuilder // Append text to the current built string.
+      <Declaration><![CDATA[(*! <Summary>
+Keeps only the last Length characters of the built string.
+</Summary> *)
+METHOD Right : IStringBuilder // Returns the builder for fluent chaining.
 VAR_INPUT
-	Length : UDINT;
+	Length : UDINT; // Number of characters to keep from the right
 END_VAR
 VAR
     _BoolRes : BOOL;
@@ -341,19 +380,19 @@ Right := THIS^;      // Fluent interface]]></ST>
       </Implementation>
     </Method>
     <Method Name="ToString" Id="{0701aa11-e1f1-41fa-9e08-587883568ffd}">
-      <Declaration><![CDATA[(* <Description>
-Returns current built string.
-   </Description> *)
-METHOD PUBLIC ToString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) //Returns current built string.]]></Declaration>
+      <Declaration><![CDATA[(*! <Summary>
+Returns the current built string.
+</Summary> *)
+METHOD PUBLIC ToString : STRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) // The current built string.]]></Declaration>
       <Implementation>
         <ST><![CDATA[ToString := _BuildingString;]]></ST>
       </Implementation>
     </Method>
     <Method Name="ToWString" Id="{ff7ad9e4-7d5b-4ada-95f9-5a10d98dae67}">
-      <Declaration><![CDATA[(* <Description>
-Returns current built string as wide string.
-   </Description> *)
-METHOD ToWString : WSTRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength)]]></Declaration>
+      <Declaration><![CDATA[(*! <Summary>
+Returns the current built string as a WSTRING.
+</Summary> *)
+METHOD ToWString : WSTRING(GVL_Param_AUT_Utilities.StringBuilder_MaxStringLength) // The current built string as WSTRING.]]></Declaration>
       <Implementation>
         <ST><![CDATA[ToWString := Tc2_Utilities.CHAR_TO_WCHAR(_BuildingString);]]></ST>
       </Implementation>

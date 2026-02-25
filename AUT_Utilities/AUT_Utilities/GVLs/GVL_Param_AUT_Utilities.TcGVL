@@ -1,10 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_Param_AUT_Utilities" Id="{a1668b94-fa3c-453e-a051-af918792153b}" ParameterList="True">
-    <Declaration><![CDATA[{attribute 'qualified_only'}
+    <Declaration><![CDATA[(*! <Summary>
+Library-wide configuration parameters for AUT_Utilities.
+</Summary> *)
+{attribute 'qualified_only'}
 VAR_GLOBAL CONSTANT
     {attribute 'analysis' := '-33'}      // Disable SA0033: Unused variable
-    StringBuilder_MaxStringLength : UINT := 1024;
+    StringBuilder_MaxStringLength : UINT := 1024; // Maximum string length (in characters) used throughout the StringBuilder
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
