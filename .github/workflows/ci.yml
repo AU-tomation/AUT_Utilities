@@ -65,7 +65,7 @@ jobs:
         if: always()
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: ${{ github.workspace }}\AUT_Utilities_PRJ.sarif.json
+          sarif_file: ${{ github.workspace }}\AUT_Utilities.sarif.json
           category: twincat-static-analysis
 
       - name: Upload Boot Project
