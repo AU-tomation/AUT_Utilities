@@ -1,38 +1,38 @@
 """
 generate_manifest.py
 ────────────────────
-Esegui questo script UNA VOLTA dalla cartella radice della documentazione
-(quella che contiene index.html, script.js, Tc3DocGenHtml.css):
+Run this script ONCE from the documentation root folder
+(the one containing index.html, script.js, Tc3DocGenHtml.css):
 
     python generate_manifest.py
 
-Genera un file manifest.json che index.html usa per costruire la sidebar
-senza dover fare directory listing (che Python non restituisce quando
-esiste un index.html).
+Generates a manifest.json file that index.html uses to build the sidebar
+without needing directory listing (which Python does not serve when
+an index.html file is present).
 
-Ri-eseguilo ogni volta che Beckhoff rigenera la documentazione.
+Re-run it every time Beckhoff regenerates the documentation.
 """
 
 import os
 import json
 
-# Cartelle da escludere completamente
+# Folders to skip entirely
 SKIP_FOLDERS = {'files'}
 
-# Estensioni considerate pagine di documentazione
+# File extensions treated as documentation pages
 DOC_EXTENSIONS = {'.htm', '.html'}
 
 
 def scan(folder_path, base_path):
     """
-    Scansiona ricorsivamente folder_path e ritorna un nodo albero.
+    Recursively scans folder_path and returns a tree node.
 
-    Regola speciale: se una cartella ha lo stesso nome (case-insensitive) di un
-    file HTM nella stessa cartella, i figli della cartella vengono "sollevati"
-    come figli diretti del file HTM, eliminando il nodo-cartella intermedio.
-    Esempio:
-        StringBuilder.HTM  +  StringBuilder/   →  nodo StringBuilder.HTM
-                                                     con figli Append, Reset, ...
+    Special rule: if a folder has the same name (case-insensitive) as an HTM
+    file in the same folder, the folder's children are "lifted" as direct
+    children of the HTM file node, removing the intermediate folder node.
+    Example:
+        StringBuilder.HTM  +  StringBuilder/   →  node StringBuilder.HTM
+                                                     with children Append, Reset, ...
     """
     name = os.path.basename(folder_path)
     node = {"name": name, "path": None, "children": []}
@@ -42,9 +42,9 @@ def scan(folder_path, base_path):
     except PermissionError:
         return node
 
-    # Prima passata: raccogli file HTM e sottocartelle separatamente
+    # First pass: collect HTM files and subdirectories separately
     htm_files = {}   # name_lower -> file_node dict
-    subdirs   = []   # (entry, child_node) da processare
+    subdirs   = []   # entries to process
 
     for entry in entries:
         if entry.name.startswith('.'):
@@ -63,13 +63,13 @@ def scan(folder_path, base_path):
             if entry.name not in SKIP_FOLDERS:
                 subdirs.append(entry)
 
-    # Seconda passata: processa le sottocartelle
+    # Second pass: process subdirectories
     for entry in subdirs:
         child = scan(entry.path, base_path)
         if not (child["children"] or child["path"]):
-            continue  # cartella vuota, salta
+            continue  # empty folder, skip
 
-        # Se esiste un HTM con lo stesso nome, solleva i figli sotto di esso
+        # If an HTM file with the same name exists, lift children under it
         key = entry.name.lower()
         if key in htm_files:
             htm_files[key]["children"].extend(child["children"])
@@ -80,11 +80,11 @@ def scan(folder_path, base_path):
 
 
 def find_prj_folder(base_path):
-    """Trova la cartella *_PRJ nella base."""
+    """Finds the *_PRJ folder under base_path."""
     for entry in os.scandir(base_path):
         if entry.is_dir() and '_PRJ' in entry.name.upper():
             return entry.path
-    # fallback: prima cartella non-skip
+    # Fallback: first non-skipped folder
     for entry in os.scandir(base_path):
         if entry.is_dir() and entry.name not in SKIP_FOLDERS:
             return entry.path
@@ -94,14 +94,14 @@ def find_prj_folder(base_path):
 def build_manifest(base_path):
     prj_path = find_prj_folder(base_path)
     if not prj_path:
-        raise RuntimeError(f"Nessuna cartella *_PRJ trovata in: {base_path}")
+        raise RuntimeError(f"No *_PRJ folder found in: {base_path}")
 
     plc_path = os.path.join(prj_path, 'PLC')
     if not os.path.isdir(plc_path):
-        raise RuntimeError(f"Cartella PLC non trovata in: {prj_path}")
+        raise RuntimeError(f"PLC folder not found in: {prj_path}")
 
-    # Trova il file HTM anchor (es. AUT_Utilities.HTM) direttamente in PLC/
-    anchor_file = None
+    # Find the HTM anchor file (e.g. AUT_Utilities.HTM) directly under PLC/
+    anchor_file    = None
     content_folder = None
     for entry in os.scandir(plc_path):
         if entry.is_file() and entry.name.lower().endswith('.htm'):
@@ -110,20 +110,20 @@ def build_manifest(base_path):
             content_folder = entry.path
 
     if not anchor_file:
-        raise RuntimeError(f"Nessun file HTM trovato in: {plc_path}")
+        raise RuntimeError(f"No HTM file found in: {plc_path}")
 
-    anchor_rel = os.path.relpath(anchor_file.path, base_path).replace('\\', '/')
+    anchor_rel  = os.path.relpath(anchor_file.path, base_path).replace('\\', '/')
     anchor_name = os.path.splitext(anchor_file.name)[0]
 
     root = {
-        "name": anchor_name,
-        "path": anchor_rel,
-        "isRoot": True,
+        "name":     anchor_name,
+        "path":     anchor_rel,
+        "isRoot":   True,
         "children": []
     }
 
     if content_folder:
-        # Scansiona ogni sottocartella di content_folder
+        # Scan each subfolder of content_folder
         try:
             entries = sorted(os.scandir(content_folder), key=lambda e: (e.is_dir(), e.name.lower()))
         except PermissionError:
@@ -139,8 +139,8 @@ def build_manifest(base_path):
             elif entry.is_file() and entry.name.lower().endswith('.htm'):
                 rel = os.path.relpath(entry.path, base_path).replace('\\', '/')
                 root["children"].append({
-                    "name": os.path.splitext(entry.name)[0],
-                    "path": rel,
+                    "name":     os.path.splitext(entry.name)[0],
+                    "path":     rel,
                     "children": []
                 })
 
@@ -149,7 +149,7 @@ def build_manifest(base_path):
 
 if __name__ == '__main__':
     base = os.path.dirname(os.path.abspath(__file__))
-    print(f"Scansione da: {base}")
+    print(f"Scanning from: {base}")
 
     try:
         manifest = build_manifest(base)
@@ -157,7 +157,6 @@ if __name__ == '__main__':
         with open(out_path, 'w', encoding='utf-8') as f:
             json.dump(manifest, f, ensure_ascii=False, indent=2)
 
-        # Count pages
         def count_pages(node):
             n = 1 if node.get('path') else 0
             for c in node.get('children', []):
@@ -165,10 +164,10 @@ if __name__ == '__main__':
             return n
 
         total = count_pages(manifest)
-        print(f"OK manifest.json generato -- {total} pagine indicizzate.")
-        print(f"   Avvia il server: python -m http.server 8080")
-        print(f"   Poi apri:        http://localhost:8080/index.html")
+        print(f"OK manifest.json generated — {total} pages indexed.")
+        print(f"   Start the server: python -m http.server 8080")
+        print(f"   Then open:        http://localhost:8080/index.html")
 
     except Exception as e:
-        print(f"ERRORE: {e}")
+        print(f"ERROR: {e}")
         raise
