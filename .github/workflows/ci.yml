@@ -12,6 +12,7 @@ jobs:
       contents: write        # necessario per push su gh-pages
       checks: write          # necessario per il report UI
       security-events: write # necessario per Code Scanning SARIF
+      actions: read          # necessario per CodeQL upload-sarif telemetry
 
     steps:
       - name: Checkout repository
@@ -120,3 +121,49 @@ jobs:
 
           Set-Location "${{ github.workspace }}"
           Remove-Item $tmpDir -Recurse -Force
+
+      - name: Publish Library Releases
+        if: success()
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $compiledLibraries = Get-ChildItem -Path "${{ github.workspace }}" -Recurse -Filter "*.compiled-library"
+
+          if (-not $compiledLibraries) {
+            Write-Host "No .compiled-library files found — skipping release publishing."
+            exit 0
+          }
+
+          foreach ($lib in $compiledLibraries) {
+            $libName = $lib.BaseName
+
+            # Find the .plcproj in the same folder to read the version
+            $plcprojFile = Get-ChildItem -Path $lib.DirectoryName -Filter "*.plcproj" | Select-Object -First 1
+            if (-not $plcprojFile) {
+              Write-Warning "No .plcproj found alongside $($lib.Name) — skipping."
+              continue
+            }
+
+            [xml]$plcproj = Get-Content $plcprojFile.FullName
+            $version = $plcproj.SelectSingleNode("//*[local-name()='ProjectVersion']").InnerText
+            if (-not $version) {
+              Write-Warning "ProjectVersion not found in $($plcprojFile.Name) — skipping."
+              continue
+            }
+
+            $tag = "$libName-v$version"
+            Write-Host "Publishing: $tag -> $($lib.Name)"
+
+            # Create release only if it does not exist yet
+            gh release view $tag --json tagName 2>$null | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+              gh release create $tag `
+                --title "$libName v$version" `
+                --notes "Automated release built from commit ${{ github.sha }}."
+            }
+
+            # Upload (or overwrite) the .compiled-library asset
+            gh release upload $tag "$($lib.FullName)" --clobber
+            Write-Host "Done: $tag"
+          }
